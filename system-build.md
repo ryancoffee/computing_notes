@@ -1,6 +1,6 @@
 ##Nominal base
 sudo apt update
-sudo apt install git vim bc grpn gnuplot 
+sudo apt install git vim bc gnuplot 
 git config --global user.email "coffeer76@gmail.com"
 git config --global user.name "Ryan Coffee"
 
@@ -19,8 +19,19 @@ coffee@beanbox:~$ sudo apt install net-tools openssh-server
 sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.factory-defaults
 sudo systemctl restart ssh
 
+##Python and pip
+sudo apt install python3-venv python3-pip python3-setuptools python-setuptools python-venv python-pip
+
 ##Nice extras for GUI 
-sudo apt install gimp g3data
+sudo apt install gimp grpn g3data
+
+##Chrome
+sudo apt-get install libxss1 libappindicator1 libindicator7
+cd $HOME/Downloads
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome*.deb
+rm google-chrome*.deb
+
 
 
 ##Used for Bazel
