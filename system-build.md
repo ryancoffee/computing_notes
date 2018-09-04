@@ -39,8 +39,11 @@ sudo apt-get install libxss1 libappindicator1 libindicator7
 cd $HOME/Downloads
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome*.deb
-rm google-chrome*.deb
-cd -
+rm google-chrome*.deb  
+cd -  
+
+now do something fancy that is like 'which google-chrome' and use this as a way to get the right linker in an e.g. ln -sf /usr/bin/google-chrome /usr/bin/chrome
+
 
 
 Used for Bazel
