@@ -1,9 +1,27 @@
 ##Nominal base
 sudo apt update
-sudo apt install vim bc grpn gnuplot
+sudo apt install git vim bc grpn gnuplot 
+git config --global user.email "coffeer76@gmail.com"
+git config --global user.name "Ryan Coffee"
 
-#Nice extras for GUI 
+
+##This is for building and getting ssh running
+
+coffee@beanbox:~$ ip route | grep default
+default via 192.168.1.254 dev eno1 proto dhcp metric 100 
+
+
+coffee@beanbox:~$ sudo apt update
+[sudo] password for coffee: 
+coffee@beanbox:~$ sudo apt update
+[sudo] password for coffee: 
+coffee@beanbox:~$ sudo apt install net-tools openssh-server
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.factory-defaults
+sudo systemctl restart ssh
+
+##Nice extras for GUI 
 sudo apt install gimp g3data
+
 
 ##Used for Bazel
 sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python
@@ -32,17 +50,4 @@ If you ran the Bazel installer with the --user flag as above, the Bazel executab
 export PATH="$PATH:$HOME/bin"
 You can also add this command to your ~/.bashrc file.
 
-
-coffee@beanbox:~$ ip route | grep default
-default via 192.168.1.254 dev eno1 proto dhcp metric 100 
-
-This is for building and getting ssh running
-
-coffee@beanbox:~$ sudo apt update
-[sudo] password for coffee: 
-coffee@beanbox:~$ sudo apt update
-[sudo] password for coffee: 
-coffee@beanbox:~$ sudo apt install net-tools openssh-server
-sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.factory-defaults
-sudo systemctl restart ssh
 
