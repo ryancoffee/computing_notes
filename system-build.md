@@ -2,7 +2,7 @@ Nominal base
 ============
 
 sudo apt update  
-sudo apt install git vim bc grip gnuplot  
+sudo apt install git vim bc grip members gnuplot  
 git config --global user.email "coffeer76@gmail.com"  
 git config --global user.name "Ryan Coffee"  
 
@@ -68,5 +68,4 @@ Step 4: Set up your environment
 If you ran the Bazel installer with the --user flag as above, the Bazel executable is installed in your $HOME/bin directory. It's a good idea to add this directory to your default paths, as follows:  
 export PATH="$PATH:$HOME/bin"  
 You can also add this command to your ~/.bashrc file.  
-
 
