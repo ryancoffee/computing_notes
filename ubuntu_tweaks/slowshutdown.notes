@@ -1,0 +1,14 @@
+coffee@coffee-ThinkPad-X260:~$ sudo systemctl edit cups-browsed.service 
+
+add to the file (possible a new file)
+
+[Service]
+TimeoutStopSec=10
+
+then do a 
+
+coffee@coffee-ThinkPad-X260:~$ sudo systemctl daemon-reload  
+coffee@coffee-ThinkPad-X260:~$ sudo systemctl stop cups-browsed.service 
+coffee@coffee-ThinkPad-X260:~$ sudo systemctl start cups-browsed.service 
+
+then try shutting down and see if it is faster.

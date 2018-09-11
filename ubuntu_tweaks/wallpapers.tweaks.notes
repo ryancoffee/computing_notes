@@ -1,0 +1,21 @@
+
+-- changing the wallpaper for the welcome screen --
+
+sudo cp your_wallpaper.jpg /usr/share/backgrounds/
+sudo chmod 644 /usr/share/backgrounds/your_wallpaper.jpg
+sudo nano /usr/share/gnome-background-properties/trusty-wallpapers.xml
+Go to the bottom of the file and above the last </wallpapers> tag, copy the text: 
+<wallpaper>
+    <name>Name_of_your_wallpaper</name>
+    <filename>/usr/share/backgrounds/your_wallpaper.jpg</filename>
+    <options>zoom</options>
+    <pcolor>#000000</pcolor>
+    <scolor>#000000</scolor>
+    <shade_type>solid</shade_type>   
+</wallpaper>
+</wallpapers> <-- This should be the last line - copy the above text
+Save file and exit.
+Open System Settings->Appearance->Look tag->Wallpapers from the expanding window. And finally choose your wallpaper which will appear now with the name Name_of_your_wallpaper.
+
+
+
