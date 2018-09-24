@@ -21,6 +21,8 @@ sudo systemctl restart ssh
 
 ##Python and pip
 sudo apt install python3-venv python3-pip python3-setuptools python-setuptools python-venv python-pip
+pip install numpy scipy	
+pip3 install numpy scipy
 
 ##Nice extras for GUI 
 sudo apt install gimp grpn g3data
