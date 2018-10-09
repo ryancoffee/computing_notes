@@ -1,3 +1,14 @@
+##Boost
+cd ${HOME}/Downloads
+wget https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.bz2
+cd /usr/local
+sudo tar -xzf ${HOME}Downloads/boost_1_68_0.tar.gz
+rm ${HOME}/Downloads/boost_1_68_0.tar.gz
+
+##OpenMP  
+Seems like this is already in modern c compilers, just using the -fopenmp flag in the compile
+
+
 ##OpenMPI
 cd ${HOME}/Downloads  
 wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.2.tar.gz  
@@ -8,28 +19,26 @@ sudo ./configure
 sudo make all install   
 # made it here so far  
 
-##OpenMP  
-Seems like this is already in modern c compilers, just using the -fopenmp flag in the compile
 
-
-##Boost
-cd ${HOME}/Downloads
-wget https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.bz2
-cd /usr/local
-sudo tar -xzf ${HOME}Downloads/boost_1_68_0.tar.gz
-rm ${HOME}/Downloads/boost_1_68_0.tar.gz
-
-##FFTW3
-cd ${HOME}/Downloads
-wget http://www.fftw.org/fftw-3.3.8.tar.gz
-cd /usr/local
-sudo tar -xzf ${HOME}/Downloads/fftw-3.3.8.tar.gz
-sudo wget http://www.fftw.org/fftw3.pdf
-cd fftw-3.3.8
-sudo ./configure --disable-fortran --enable-openmp --enable-threads --enable-mpi --with-gnu-ld
-	" only if building for TFLite or such acceleration in inferencing with FFTs --enable-single "
+##FFTW3  
+cd ${HOME}/Downloads  
+wget http://www.fftw.org/fftw-3.3.8.tar.gz  
+cd /usr/local  
+sudo tar -xzf ${HOME}/Downloads/fftw-3.3.8.tar.gz  
+sudo wget http://www.fftw.org/fftw3.pdf  
+cd fftw-3.3.8  
+sudo ./configure --disable-fortran --enable-openmp --enable-threads --with-gnu-ld  
+	" only if building for TFLite or such acceleration in inferencing with FFTs --enable-single "  
+	" also can't seem to get --enable-mpi to work"   
+sudo make
+sudo make install
 # didn't succeed yet (for beanbox) needs MPI, 
 
+##ParaView
+mkdir ${HOME}/computing
+cd !$
+wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.6&type=binary&os=Linux&downloadFile=ParaView-5.6.0-RC1-Qt5-MPI-Linux-64bit.tar.gz  
+wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.6&type=data&os=Sources&downloadFile=ParaViewTestingData-v5.6.0-RC2.tar.xz
 ##Used for Bazel
 sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python
 Installing using binary installer
