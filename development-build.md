@@ -1,40 +1,34 @@
-##Nominal base
-sudo apt -y update
-sudo apt -y install git vim bc gnuplot 
-git config --global user.email "coffeer76@gmail.com"
-git config --global user.name "Ryan Coffee"
+##OpenMPI
+cd ${HOME}/Downloads  
+wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.2.tar.gz  
+cd /usr/local  
+sudo tar -xzf ${HOME}/Downloads/openmpi-3.1.2.tar.gz  
+cd openmpi-3.1.2  
+sudo ./configure  
+sudo make all install   
+# made it here so far  
+
+##OpenMP  
+Seems like this is already in modern c compilers, just using the -fopenmp flag in the compile
 
 
-##This is for building and getting ssh running
+##Boost
+cd ${HOME}/Downloads
+wget https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.bz2
+cd /usr/local
+sudo tar -xzf ${HOME}Downloads/boost_1_68_0.tar.gz
+rm ${HOME}/Downloads/boost_1_68_0.tar.gz
 
-coffee@beanbox:~$ ip route | grep default
-default via 192.168.1.254 dev eno1 proto dhcp metric 100 
-
-
-coffee@beanbox:~$ sudo apt update
-[sudo] password for coffee: 
-coffee@beanbox:~$ sudo apt update
-[sudo] password for coffee: 
-coffee@beanbox:~$ sudo apt install net-tools openssh-server
-sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.factory-defaults
-sudo systemctl restart ssh
-
-##Python and pip
-sudo apt install python3-venv python3-pip python3-setuptools python-setuptools python-venv python-pip
-pip install numpy scipy	
-pip3 install numpy scipy
-
-##Nice extras for GUI 
-sudo apt install gimp grpn g3data
-
-##Chrome
-sudo apt install -y libxss1 libappindicator1 libindicator7
-cd $HOME/Downloads
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo dpkg -i google-chrome*.deb
-rm google-chrome*.deb
-
-
+##FFTW3
+cd ${HOME}/Downloads
+wget http://www.fftw.org/fftw-3.3.8.tar.gz
+cd /usr/local
+sudo tar -xzf ${HOME}/Downloads/fftw-3.3.8.tar.gz
+sudo wget http://www.fftw.org/fftw3.pdf
+cd fftw-3.3.8
+sudo ./configure --disable-fortran --enable-openmp --enable-threads --enable-mpi --with-gnu-ld
+	" only if building for TFLite or such acceleration in inferencing with FFTs --enable-single "
+# didn't succeed yet (for beanbox) needs MPI, 
 
 ##Used for Bazel
 sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python
