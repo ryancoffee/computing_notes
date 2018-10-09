@@ -42,6 +42,14 @@ wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&ve
 wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.6&type=data&os=Sources&downloadFile=ParaViewTestingData-v5.6.0-RC2.tar.xz  
 
 
+##Perl6 install
+wget https://rakudo.perl6.org/downloads/star/rakudo-star-2018.06.tar.gz
+tar xfz rakudo-star-2018.06.tar.gz
+cd rakudo-star-2018.06
+perl Configure.pl --gen-moar --make-install --prefix ~/rakudo
+ln -s ~/rakudo/bin/perl6 /usr/bin/perl6
+
+
 ##Used for Bazel  
 sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python  
 Installing using binary installer  
