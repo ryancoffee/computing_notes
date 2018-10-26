@@ -1,11 +1,11 @@
-##Nominal base  
+## Nominal base  
 sudo apt -y update  
 sudo apt -y install git vim bc gnuplot   
 git config --global user.email "coffeer76@gmail.com"  
 git config --global user.name "Ryan Coffee"  
 
 
-##This is for building and getting ssh running  
+## This is for building and getting ssh running  
 
 coffee@beanbox:~$ ip route | grep default  
 default via 192.168.1.254 dev eno1 proto dhcp metric 100   
@@ -19,15 +19,15 @@ coffee@beanbox:~$ sudo apt install net-tools openssh-server
 sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.factory-defaults  
 sudo systemctl restart ssh  
 
-##Python and pip  
+## Python and pip  
 sudo apt install python3-venv python3-pip python3-setuptools python-setuptools python-venv python-pip  
 pip install numpy scipy	  
 pip3 install numpy scipy  
 
-##Nice extras for GUI   
+## Nice extras for GUI   
 sudo apt install gimp grpn g3data dia  
 
-##Chrome
+## Chrome
 sudo apt install -y libxss1 libappindicator1 libindicator7  
 cd $HOME/Downloads  
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb  
@@ -38,4 +38,7 @@ rm google-chrome*.deb
 cd ~/Downloads  
 wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz  
 tar -xzf install-tl-unx.tar.gz  
+cd install-tl-unx/
 sudo ./install-tl  
+cd ../
+rm -rf install-tl-unx*
