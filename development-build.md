@@ -2,8 +2,10 @@
 cd ${HOME}/Downloads  
 wget https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.bz2  
 cd /usr/local  
-sudo tar -xzf ${HOME}Downloads/boost_1_68_0.tar.gz  
-rm ${HOME}/Downloads/boost_1_68_0.tar.gz  
+sudo tar -xjf ${HOME}/Downloads/boost_1_68_0.tar.bz2  
+rm ${HOME}/Downloads/boost_1_68_0.tar.bz2  
+sudo mkdir -p /opt/boost  
+sudo ln -sf /usr/local/boost_1_68_0 /opt/boost/include  
 
 ## OpenMP  
 Seems like this is already in modern c compilers, just using the -fopenmp flag in the compile  
