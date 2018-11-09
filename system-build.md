@@ -11,8 +11,8 @@ git config --global user.name "Ryan Coffee"
 coffee@beanbox:~$ ip route | grep default  
 default via 192.168.1.254 dev eno1 proto dhcp metric 100   
 
-sudo apt update  
-sudo apt install net-tools openssh-server  
+sudo apt -y update  
+sudo apt -y install net-tools openssh-server  
 sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.factory-defaults  
 sudo systemctl restart ssh  
 
