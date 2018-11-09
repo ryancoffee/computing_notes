@@ -45,7 +45,6 @@ rm -rf install-tl-*
 ## roaster/beanbox specifics
 sudo addgroup data 
 sudo usrmod -a -G data coffee
-sudo usrmod -a -G data root
 
 ## perl6   
 sudo apt -y update
@@ -63,4 +62,5 @@ make rakudo-spectest
 make install
 echo "export PATH=$(pwd)/install/bin/:$(pwd)/install/share/perl6/site/bin:\$PATH" >> ~/.bashrc
 source ~/.bashrc
+cd ${HOME}
 
