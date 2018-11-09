@@ -54,7 +54,11 @@ sudo add-apt-repository \
 sudo apt -y update  
 sudo apt -y install docker-ce  
 sudo docker run hello-world  
-
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo systemctl enable docker
+su -l $USER
+docker run hello-world  
 
 
 
