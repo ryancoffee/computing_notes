@@ -29,15 +29,38 @@ cd /usr/local
 sudo tar -xzf ${HOME}/Downloads/fftw-3.3.8.tar.gz  
 sudo wget http://www.fftw.org/fftw3.pdf  
 cd fftw-3.3.8  
-sudo ./configure --disable-fortran --enable-openmp --enable-threads --with-gnu-ld  
+sudo ./configure --disable-fortran --enable-openmp --enable-threads --enable-single --with-gnu-ld  
 	" only if building for TFLite or such acceleration in inferencing with FFTs --enable-single "  
 	" also can't seem to get --enable-mpi to work"   
 sudo make
 sudo make install
 # only succeed by ignoring MPI on both beanbox and roaster, 
 
+## Docker  
+read this: https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce  
+sudo apt remove docker docker-engine docker.io   
+sudo apt -y update  
+sudo apt -y install \  
+    apt-transport-https \  
+    ca-certificates \  
+    curl \  
+    software-properties-common  
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -  
+sudo apt-key fingerprint 0EBFCD88  
+sudo add-apt-repository \  
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \  
+   $(lsb_release -cs) \  
+   stable"  
+sudo apt -y update  
+sudo apt -y install docker-ce  
+sudo docker run hello-world  
+
+
+
+
+
 ## ParaView  
-NOT YET HERE...  
+# NOT YET HERE...   
 mkdir ${HOME}/computing  
 cd !$  
 wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.6&type=binary&os=Linux&downloadFile=ParaView-5.6.0-RC1-Qt5-MPI-Linux-64bit.tar.gz  
@@ -45,6 +68,8 @@ wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&ve
 
 
 ## Perl6 install  
+# this was done in the system build stage  
+# and likely in a better way  
 wget https://rakudo.perl6.org/downloads/star/rakudo-star-2018.06.tar.gz  
 tar xfz rakudo-star-2018.06.tar.gz  
 cd rakudo-star-2018.06  
@@ -53,6 +78,7 @@ ln -s ~/rakudo/bin/perl6 /usr/bin/perl6
 
 
 ## Used for Bazel   
+# maybe going to stick with make until absolutely necessary
 sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python  
 Installing using binary installer  
 The binary installers are on Bazel's GitHub releases page.  
