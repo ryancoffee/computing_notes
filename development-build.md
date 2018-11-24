@@ -1,15 +1,15 @@
-##Boost
+## Boost
 cd ${HOME}/Downloads
 wget https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.bz2
 cd /usr/local
 sudo tar -xzf ${HOME}Downloads/boost_1_68_0.tar.gz
 rm ${HOME}/Downloads/boost_1_68_0.tar.gz
 
-##OpenMP  
+## OpenMP  
 Seems like this is already in modern c compilers, just using the -fopenmp flag in the compile
 
 
-##OpenMPI
+## OpenMPI
 cd ${HOME}/Downloads  
 wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.2.tar.gz  
 cd /usr/local  
@@ -20,7 +20,7 @@ sudo make all install
 # made it here so far  
 
 
-##FFTW3  
+## FFTW3  
 cd ${HOME}/Downloads  
 wget http://www.fftw.org/fftw-3.3.8.tar.gz  
 cd /usr/local  
@@ -34,7 +34,7 @@ sudo make
 sudo make install
 # only succeed by ignoring MPI on both beanbox and roaster, 
 
-##ParaView  
+## ParaView  
 NOT YET HERE...  
 mkdir ${HOME}/computing  
 cd !$  
@@ -42,15 +42,20 @@ wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&ve
 wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.6&type=data&os=Sources&downloadFile=ParaViewTestingData-v5.6.0-RC2.tar.xz  
 
 
-##Perl6 install
+## Perl6 install
 wget https://rakudo.perl6.org/downloads/star/rakudo-star-2018.06.tar.gz
 tar xfz rakudo-star-2018.06.tar.gz
 cd rakudo-star-2018.06
 perl Configure.pl --gen-moar --make-install --prefix ~/rakudo
 ln -s ~/rakudo/bin/perl6 /usr/bin/perl6
 
+## OpenCL  
+sudo apt -y update  
+sudo apt -y install ocl-icd-opencl-dev  
+pip3 install python3-pyopencl  
+pip install python-pyopencl  
 
-##Used for Bazel  
+## Used for Bazel  
 sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python  
 Installing using binary installer  
 The binary installers are on Bazel's GitHub releases page.  
