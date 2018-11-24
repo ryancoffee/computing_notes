@@ -1,17 +1,19 @@
-## Boost
-cd ${HOME}/Downloads
-wget https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.bz2
-cd /usr/local
-sudo tar -xzf ${HOME}Downloads/boost_1_68_0.tar.gz
-rm ${HOME}/Downloads/boost_1_68_0.tar.gz
+## Boost  
+cd ${HOME}/Downloads  
+wget https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.bz2  
+cd /usr/local  
+sudo tar -xjf ${HOME}/Downloads/boost_1_68_0.tar.bz2  
+rm ${HOME}/Downloads/boost_1_68_0.tar.bz2  
+sudo mkdir -p /opt/boost  
+sudo ln -sf /usr/local/boost_1_68_0 /opt/boost/include  
 
 ## OpenMP  
-Seems like this is already in modern c compilers, just using the -fopenmp flag in the compile
+Seems like this is already in modern c compilers, just using the -fopenmp flag in the compile  
 
 
-## OpenMPI
-cd ${HOME}/Downloads  
-wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.2.tar.gz  
+## OpenMPI  
+cd ${HOME}/Downloads   
+wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.2.tar.gz   
 cd /usr/local  
 sudo tar -xzf ${HOME}/Downloads/openmpi-3.1.2.tar.gz  
 cd openmpi-3.1.2  
@@ -27,27 +29,56 @@ cd /usr/local
 sudo tar -xzf ${HOME}/Downloads/fftw-3.3.8.tar.gz  
 sudo wget http://www.fftw.org/fftw3.pdf  
 cd fftw-3.3.8  
-sudo ./configure --disable-fortran --enable-openmp --enable-threads --with-gnu-ld  
+sudo ./configure --disable-fortran --enable-openmp --enable-threads --enable-single --with-gnu-ld  
 	" only if building for TFLite or such acceleration in inferencing with FFTs --enable-single "  
 	" also can't seem to get --enable-mpi to work"   
 sudo make
 sudo make install
 # only succeed by ignoring MPI on both beanbox and roaster, 
 
+## Docker  
+read this: https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce  
+sudo apt remove docker docker-engine docker.io   
+sudo apt -y update  
+sudo apt -y install \  
+    apt-transport-https \  
+    ca-certificates \  
+    curl \  
+    software-properties-common  
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -  
+sudo apt-key fingerprint 0EBFCD88  
+sudo add-apt-repository \  
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \  
+   $(lsb_release -cs) \  
+   stable"  
+sudo apt -y update  
+sudo apt -y install docker-ce  
+sudo docker run hello-world  
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo systemctl enable docker
+su -l $USER
+docker run hello-world  
+
+
+
+
 ## ParaView  
-NOT YET HERE...  
+# NOT YET HERE...   
 mkdir ${HOME}/computing  
 cd !$  
 wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.6&type=binary&os=Linux&downloadFile=ParaView-5.6.0-RC1-Qt5-MPI-Linux-64bit.tar.gz  
 wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.6&type=data&os=Sources&downloadFile=ParaViewTestingData-v5.6.0-RC2.tar.xz  
 
 
-## Perl6 install
-wget https://rakudo.perl6.org/downloads/star/rakudo-star-2018.06.tar.gz
-tar xfz rakudo-star-2018.06.tar.gz
-cd rakudo-star-2018.06
-perl Configure.pl --gen-moar --make-install --prefix ~/rakudo
-ln -s ~/rakudo/bin/perl6 /usr/bin/perl6
+## Perl6 install  
+# this was done in the system build stage  
+# and likely in a better way  
+wget https://rakudo.perl6.org/downloads/star/rakudo-star-2018.06.tar.gz  
+tar xfz rakudo-star-2018.06.tar.gz  
+cd rakudo-star-2018.06  
+perl Configure.pl --gen-moar --make-install --prefix ~/rakudo  
+ln -s ~/rakudo/bin/perl6 /usr/bin/perl6  
 
 ## OpenCL  
 sudo apt -y update  
@@ -55,7 +86,8 @@ sudo apt -y install ocl-icd-opencl-dev
 pip3 install python3-pyopencl  
 pip install python-pyopencl  
 
-## Used for Bazel  
+## Used for Bazel   
+# maybe going to stick with make until absolutely necessary
 sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python  
 Installing using binary installer  
 The binary installers are on Bazel's GitHub releases page.  
