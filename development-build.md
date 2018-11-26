@@ -115,8 +115,15 @@ wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&ve
 ## OpenCL  
 sudo apt -y update  
 sudo apt -y install ocl-icd-opencl-dev  
-pip3 install python3-pyopencl  
-pip install python-pyopencl  
+pip3 install pyopencl  ## this seems to have failed ##
+  In file included from src/wrap_cl.hpp:60:0,
+                   from src/wrap_constants.cpp:1:
+  src/wrap_helpers.hpp:5:10: fatal error: pybind11/pybind11.h: No such file or directory
+   #include <pybind11/pybind11.h>
+            ^~~~~~~~~~~~~~~~~~~~~
+  compilation terminated.
+  error: command 'x86_64-linux-gnu-gcc' failed with exit status 1
+pip install pyopencl  ## also seems to fail the same way ##
 
 ## Used for Bazel   
 # maybe going to stick with make until absolutely necessary
