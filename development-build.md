@@ -112,6 +112,12 @@ wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&ve
 wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.6&type=data&os=Sources&downloadFile=ParaViewTestingData-v5.6.0-RC2.tar.xz  
 
 
+## OpenCL  
+sudo apt -y update  
+sudo apt -y install ocl-icd-opencl-dev  
+pip3 install python3-pyopencl  
+pip install python-pyopencl  
+
 ## Used for Bazel   
 # maybe going to stick with make until absolutely necessary
 sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python  

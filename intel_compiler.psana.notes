@@ -1,0 +1,2 @@
+source /afs/slac/package/intel_tools/prod/bin/compilervars.csh intel64
+. /afs/slac/package/intel_tools/prod/bin/compilervars.sh intel64
