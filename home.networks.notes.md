@@ -34,4 +34,9 @@ If setting the port to something other than 22, then getting in means
 ssh -L localport:127.0.0.1:localport username@ServerIP **-p** **serverport**  
 something like this.  
 
-
+## AFS versus NFS  
+I think I'm going to want AFS rather than NFS in order to best use the fast SDD in beanbox and roaster
+while keeping the data also safe in /home and /data on the TB drive in pavoni
+	https://en.wikipedia.org/wiki/Andrew_File_System
+	https://en.wikipedia.org/wiki/Network-attached_storage
+	https://en.wikipedia.org/wiki/Network_File_System
