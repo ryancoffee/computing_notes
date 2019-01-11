@@ -125,6 +125,12 @@ pip3 install pyopencl  ## this seems to have failed ##
   error: command 'x86_64-linux-gnu-gcc' failed with exit status 1
 pip install pyopencl  ## also seems to fail the same way ##
 
+
+## HDF5  
+http://docs.h5py.org/en/stable/build.html
+https://www.hdfgroup.org/downloads/hdf5/source-code/
+git clone https://github.com/live-clones/hdf5.git
+
 ## Used for Bazel   
 # maybe going to stick with make until absolutely necessary
 sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python  
