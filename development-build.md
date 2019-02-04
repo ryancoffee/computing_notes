@@ -7,6 +7,12 @@ rm ${HOME}/Downloads/boost_1_68_0.tar.bz2
 sudo mkdir -p /opt/boost  
 sudo ln -sf /usr/local/boost_1_68_0 /opt/boost/include  
 
+# build and link  
+cd /usr/local/boost_1_68_0/  
+sudo ./bootstrap.sh  
+sudo ./b2 install
+
+
 ## OpenMP  
 Seems like this is already in modern c compilers, just using the -fopenmp flag in the compile  
 
@@ -32,6 +38,21 @@ cd fftw-3.3.8
 sudo ./configure --disable-fortran --enable-openmp --enable-threads --enable-single --with-gnu-ld  
 	" only if building for TFLite or such acceleration in inferencing with FFTs --enable-single "  
 	" also can't seem to get --enable-mpi to work"   
+sudo mkdir /opt/fftw3
+sudo ln -s /usr/local/fftw-3.3.8 /opt/fftw3/include
+
+# symlinking for sake of makefile ease
+coffee@pavoni:/usr/lib/x86_64-linux-gnu$ ls -a | grep fftw3
+coffee@pavoni:/usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3f_omp.so.3 libfftw3f_omp.so  
+coffee@pavoni:/usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3_omp.so.3 libfftw3_omp.so  
+coffee@pavoni:/usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3.so.3 libfftw3.so  
+coffee@pavoni:/usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3f.so.3 libfftw3f.so  
+coffee@pavoni:/usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3f_threads.so.3 libfftw3f_threads.so  
+coffee@pavoni:/usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3_threads.so.3 libfftw3_threads.so  
+
+
+# or including fortran  
+sudo ./configure --enable-openmp --enable-threads --enable-single --with-gnu-ld  
 sudo make
 sudo make install
 # only succeed by ignoring MPI on both beanbox and roaster, 
@@ -60,6 +81,26 @@ sudo systemctl enable docker
 su -l $USER
 docker run hello-world  
 
+## Perl6 install  
+sudo apt -y update  
+sudo apt -y install build-essential libssl-dev  
+cd ${HOME}/Downloads  
+wget https://rakudo.org/latest/star/source   
+cd /usr/local  
+sudo tar xzf source   
+sudo ln -s rakudo-star-* rakudo  
+rm -f ${HOME}/source  
+cd rakudo  
+sudo perl Configure.pl --backend=moar --gen-moar  
+sudo make
+sudo make rakudo-test  
+sudo make rakudo-spectest  
+sudo make install  
+echo "export PATH=$(pwd)/install/bin/:$(pwd)/install/share/perl6/site/bin:\$PATH" >> $HOME/.bashrc  
+source $HIME/.bashrc  
+cd ${HOME}  
+
+
 
 
 
@@ -71,20 +112,24 @@ wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&ve
 wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.6&type=data&os=Sources&downloadFile=ParaViewTestingData-v5.6.0-RC2.tar.xz  
 
 
-## Perl6 install  
-# this was done in the system build stage  
-# and likely in a better way  
-wget https://rakudo.perl6.org/downloads/star/rakudo-star-2018.06.tar.gz  
-tar xfz rakudo-star-2018.06.tar.gz  
-cd rakudo-star-2018.06  
-perl Configure.pl --gen-moar --make-install --prefix ~/rakudo  
-ln -s ~/rakudo/bin/perl6 /usr/bin/perl6  
-
 ## OpenCL  
 sudo apt -y update  
 sudo apt -y install ocl-icd-opencl-dev  
-pip3 install python3-pyopencl  
-pip install python-pyopencl  
+pip3 install pyopencl  ## this seems to have failed ##
+  In file included from src/wrap_cl.hpp:60:0,
+                   from src/wrap_constants.cpp:1:
+  src/wrap_helpers.hpp:5:10: fatal error: pybind11/pybind11.h: No such file or directory
+   #include <pybind11/pybind11.h>
+            ^~~~~~~~~~~~~~~~~~~~~
+  compilation terminated.
+  error: command 'x86_64-linux-gnu-gcc' failed with exit status 1
+pip install pyopencl  ## also seems to fail the same way ##
+
+
+## HDF5  
+http://docs.h5py.org/en/stable/build.html
+https://www.hdfgroup.org/downloads/hdf5/source-code/
+git clone https://github.com/live-clones/hdf5.git
 
 ## Used for Bazel   
 # maybe going to stick with make until absolutely necessary
