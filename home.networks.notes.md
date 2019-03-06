@@ -14,17 +14,28 @@ Got it working.  but still have to have computer on and issue a
 sudo service ssh start  
 
 ## ssh-keygen  
-```
 For now I logged into root  
 this is largely because I will eventually like to mirror my /home directories between the two machines.  
 did an ssh-keygen  
 then copy the .pub key from there to the machine I want to be able to get into it.    
 ssh-keygen   
+ssh-add ~/.ssh/id_rsa_pavoni
+
+## settting up ssh ##  
+add this to the .bashrc
+```bash
+if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+  eval `ssh-agent`
+  ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+fi
+export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+ssh-add -l | grep "The agent has no identities" && ssh-add .ssh/id_rsa_pavoni
+```
+
 choose file: /home/coffee/.ssh/id_rsa_beanbox  
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"  
 choose file: /home/coffee/.ssh/id_rsa_git  
 add the .pub key from the _git to your Github keys  
-```
 
 ## ports  
 ```
