@@ -1,0 +1,259 @@
+git init
+
+coffee@coffee-ThinkPad-X260:~/testgit/newrepo$ git init
+Initialized empty Git repository in /home/coffee/testgit/newrepo/.git/
+coffee@coffee-ThinkPad-X260:~/testgit/newrepo$ ls -a
+
+coffee@coffee-ThinkPad-X260:~/testgit/newrepo$ git add -A
+coffee@coffee-ThinkPad-X260:~/testgit/newrepo$ git status
+On branch master
+
+Initial commit
+
+Changes to be committed:
+(use "git rm --cached <file>..." to unstage)
+
+new file:   ryans.notes
+
+coffee@coffee-ThinkPad-X260:~/testgit/newrepo$ git commit -m 'added ryans.notes'
+	[master (root-commit) e135150] added ryans.notes
+1 file changed, 1 insertion(+)
+	create mode 100644 ryans.notes
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ 
+
+
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git log
+	commit 8bf4e6423e972f2fa1b1c7fd2bbe14b22aa61df5
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:27:38 2019 -0700
+
+	hiro
+
+	commit e135150c34a89bfd86c892fcdc4660ae9f0c1074
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:23:42 2019 -0700
+
+	added ryans.notes
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git branch
+	* master
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ 
+
+
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git branch
+	* master
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git checkout -b newbranch1
+	Switched to a new branch 'newbranch1'
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (newbranch1)$ touch thisandthat
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (newbranch1)$ git branch
+	master
+	* newbranch1
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (newbranch1)$ 
+
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (newbranch1)$ git checkout master
+	Switched to branch 'master'
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git branch
+	* master
+	newbranch1
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ 
+
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git status
+	On branch master
+	Untracked files:
+	(use "git add <file>..." to include in what will be committed)
+
+	hiro2
+	hiro3
+	thisandthat
+
+	nothing added to commit but untracked files present (use "git add" to track)
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git add hiro2
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git checkout 
+	HEAD         master       newbranch1   
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git checkout newbranch1 
+	A	hiro2
+	Switched to branch 'newbranch1'
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (newbranch1)$ git status
+	On branch newbranch1
+	Changes to be committed:
+	(use "git reset HEAD <file>..." to unstage)
+
+	new file:   hiro2
+
+	Untracked files:
+	(use "git add <file>..." to include in what will be committed)
+
+	hiro3
+	thisandthat
+
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (newbranch1)$ git add hiro3
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (newbranch1)$ git commit -m 'hiro3 and 3'
+	[newbranch1 4e73b06] hiro3 and 3
+2 files changed, 0 insertions(+), 0 deletions(-)
+	create mode 100644 hiro2
+	create mode 100644 hiro3
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (newbranch1)$ git checkout master
+	Switched to branch 'master'
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git status
+	On branch master
+	Untracked files:
+	(use "git add <file>..." to include in what will be committed)
+
+	thisandthat
+
+	nothing added to commit but untracked files present (use "git add" to track)
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git add thisandthat 
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git commit -m 'thisandthat' 
+	[master bfb0f18] thisandthat
+1 file changed, 0 insertions(+), 0 deletions(-)
+	create mode 100644 thisandthat
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git log
+	commit bfb0f18b0a3f8bfb63e712759cfa2e83f9ee5d7e
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:39:00 2019 -0700
+
+	thisandthat
+
+	commit 8bf4e6423e972f2fa1b1c7fd2bbe14b22aa61df5
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:27:38 2019 -0700
+
+	hiro
+
+	commit e135150c34a89bfd86c892fcdc4660ae9f0c1074
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:23:42 2019 -0700
+
+	added ryans.notes
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git checkout newbranch1 
+	Switched to branch 'newbranch1'
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (newbranch1)$ git log
+	commit 4e73b064a936547bbf2cd52b62d462f1cdfcf49a
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:38:25 2019 -0700
+
+	hiro3 and 3
+
+	commit 58cf4d02dc37a1c0ef12cd27e281b90e697b588b
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:34:40 2019 -0700
+
+	kazuhiro
+
+	commit 8bf4e6423e972f2fa1b1c7fd2bbe14b22aa61df5
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:27:38 2019 -0700
+
+	hiro
+
+	commit e135150c34a89bfd86c892fcdc4660ae9f0c1074
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:23:42 2019 -0700
+
+	added ryans.notes
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (newbranch1)$ git checkout master 
+
+
+
+
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git merge -m 'bring in newbranch1 to master'
+	fatal: No remote for the current branch.
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git merge newbranch1 -m 'bring in newbranch1 to master'
+	Merge made by the 'recursive' strategy.
+	hiro2    | 0
+	hiro3    | 0
+	kazuhiro | 0
+3 files changed, 0 insertions(+), 0 deletions(-)
+	create mode 100644 hiro2
+	create mode 100644 hiro3
+	create mode 100644 kazuhiro
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ git log
+	commit f83cf3e7949bb3eceabc6dc7e6e5be380eae2b6c
+	Merge: bfb0f18 4e73b06
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:41:53 2019 -0700
+
+	bring in newbranch1 to master
+
+	commit bfb0f18b0a3f8bfb63e712759cfa2e83f9ee5d7e
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:39:00 2019 -0700
+
+	thisandthat
+
+	commit 4e73b064a936547bbf2cd52b62d462f1cdfcf49a
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:38:25 2019 -0700
+
+	hiro3 and 3
+
+	commit 58cf4d02dc37a1c0ef12cd27e281b90e697b588b
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:34:40 2019 -0700
+
+	kazuhiro
+
+	commit 8bf4e6423e972f2fa1b1c7fd2bbe14b22aa61df5
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:27:38 2019 -0700
+
+	hiro
+
+	commit e135150c34a89bfd86c892fcdc4660ae9f0c1074
+	Author: ryancoffee <coffeer76@gmail.com>
+	Date:   Wed Jul 17 15:23:42 2019 -0700
+
+	added ryans.notes
+	coffee@coffee-ThinkPad-X260:~/testgit/newrepo (master)$ 
+
+coffee@coffee-ThinkPad-X260:~/testgit$ git clone newrepo/ newtaco
+Cloning into 'newtaco'...
+done.
+coffee@coffee-ThinkPad-X260:~/testgit$ ls
+newrepo  newtaco
+coffee@coffee-ThinkPad-X260:~/testgit$ ls newtaco/
+hiro  hiro2  hiro3  kazuhiro  ryans.notes  thisandthat
+coffee@coffee-ThinkPad-X260:~/testgit$ 
+
+
+coffee@coffee-ThinkPad-X260:~/testgit/newtaco (master)$ cat - >> thisandthat 
+hey i dont like this
+coffee@coffee-ThinkPad-X260:~/testgit/newtaco (master)$ 
+coffee@coffee-ThinkPad-X260:~/testgit/newtaco (master)$ 
+coffee@coffee-ThinkPad-X260:~/testgit/newtaco (master)$ 
+coffee@coffee-ThinkPad-X260:~/testgit/newtaco (master)$ git status
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+  Changes not staged for commit:
+    (use "git add <file>..." to update what will be committed)
+      (use "git checkout -- <file>..." to discard changes in working directory)
+
+      	modified:   thisandthat
+
+	no changes added to commit (use "git add" and/or "git commit -a")
+	coffee@coffee-ThinkPad-X260:~/testgit/newtaco (master)$ git checkout thisandthat
+	coffee@coffee-ThinkPad-X260:~/testgit/newtaco (master)$ git status
+	On branch master
+	Your branch is ahead of 'origin/master' by 1 commit.
+	  (use "git push" to publish your local commits)
+	  nothing to commit, working directory clean
+	  coffee@coffee-ThinkPad-X260:~/testgit/newtaco (master)$ 
+
+
+
+
+git push origin master --->> pushes changes to the orign  to ckech the remote origin...
+coffee@coffee-ThinkPad-X260:~/testgit/boke (master)$ git remote -v
+origin	https://github.com/ryancoffee/boke.git (fetch)
+origin	https://github.com/ryancoffee/boke.git (push)
+coffee@coffee-ThinkPad-X260:~/testgit/boke (master)$ 
+
+coffee@coffee-ThinkPad-X260:~/testgit/boke (master)$ git remote -v
+origin	https://github.com/ryancoffee/boke.git (fetch)
+origin	https://github.com/ryancoffee/boke.git (push)
+coffee@coffee-ThinkPad-X260:~/testgit/boke (master)$ cd ../newtaco/
+coffee@coffee-ThinkPad-X260:~/testgit/newtaco (master)$ git remote -v
+origin	/home/coffee/testgit/newrepo/ (fetch)
+origin	/home/coffee/testgit/newrepo/ (push)
+coffee@coffee-ThinkPad-X260:~/testgit/newtaco (master)$ 
+
