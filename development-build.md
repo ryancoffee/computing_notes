@@ -104,6 +104,10 @@ echo "export PATH=$(pwd)/install/bin/:$(pwd)/install/share/perl6/site/bin:\$PATH
 source $HIME/.bashrc  
 cd ${HOME}  
 
+
+## Video for Linux  
+https://en.wikipedia.org/wiki/Video4Linux  
+
 ## Spatial  
 https://spatial-lang.org/  
   
