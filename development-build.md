@@ -4,18 +4,21 @@ sudo apt -y install valgrind
 
 ## Boost  
 cd ${HOME}/Downloads  
-wget https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.bz2  
+wget https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.bz2
 cd /usr/local  
-sudo tar -xjf ${HOME}/Downloads/boost_1_68_0.tar.bz2  
-rm ${HOME}/Downloads/boost_1_68_0.tar.bz2  
+sudo tar -xjf ${HOME}/Downloads/boost_1_70_0.tar.bz2  
+rm ${HOME}/Downloads/boost_1_70_0.tar.bz2  
 sudo mkdir -p /opt/boost  
-sudo ln -sf /usr/local/boost_1_68_0 /opt/boost/include  
+sudo ln -sf /usr/local/boost_1_70_0 /opt/boost/include  
 
 # build and link  
-cd /usr/local/boost_1_68_0/  
+cd /usr/local/boost_1_70_0/  
 sudo ./bootstrap.sh  
 sudo ./b2 install
 
+```
+I made it here 073119 on pavoni
+```
 
 ## OpenMP  
 Seems like this is already in modern c compilers, just using the -fopenmp flag in the compile  
