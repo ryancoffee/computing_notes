@@ -45,5 +45,10 @@ rm -rf install-tl-*
 ## pavoni/roaster/beanbox specifics
 sudo addgroup data 
 sudo usermod -a -G data coffee
-
+sudo usermod -a -G data root
+sudo chgrp data /data
+sudo chmod g+w /data
+sudo chown coffee /nvme
+sudo chgrp data /nvme
+sudo chmod g+w /nvme
 
