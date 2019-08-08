@@ -42,9 +42,9 @@ sudo ./install-tl
 cd ../  
 rm -rf install-tl-*  
 
-## roaster/beanbox specifics
+## pavoni/roaster/beanbox specifics
 sudo addgroup data 
-sudo usrmod -a -G data coffee
+sudo usermod -a -G data coffee
 
 ## perl6   
 sudo apt -y update
