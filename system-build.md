@@ -46,21 +46,4 @@ rm -rf install-tl-*
 sudo addgroup data 
 sudo usermod -a -G data coffee
 
-## perl6   
-sudo apt -y update
-sudo apt -y install build-essential libssl-dev
-cd ${HOME}/Downloads  
-wget https://rakudo.org/latest/star/source  
-tar xzf source  
-sudo mv rakudo-star-* /usr/local/rakudo  
-rm -f ${HOME}/source
-cd /usr/local/rakudo
-perl Configure.pl --backend=moar --gen-moar
-make
-make rakudo-test
-make rakudo-spectest
-make install
-echo "export PATH=$(pwd)/install/bin/:$(pwd)/install/share/perl6/site/bin:\$PATH" >> ~/.bashrc
-source ~/.bashrc
-cd ${HOME}
 

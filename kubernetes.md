@@ -26,3 +26,8 @@ So I'd like to spin up some virtual boxes on your cloud and run my simulations a
  
 But I have simulations that can generate ground truth for training and then expensive algorithms for getting ground truth for real data.    
 
+
+## Micro k8s  
+https://microk8s.io/?utm_source=MOTD&utm_medium=MOTD&utm_campaign=1)FY19_Cloud_K8
+  
+This is for a single node installation or on edge IoT boxes  
