@@ -23,7 +23,7 @@ pip3 install numpy scipy tensorflow
 pip install numpy scipy	tensorflow    
 
 ## Nice extras for GUI   
-sudo apt -y install gimp grpn g3data dia geeqie
+sudo apt -y install gimp grpn g3data dia geeqie pandoc
 
 ## Chrome
 sudo apt -y install libxss1 libappindicator1 libindicator7  
