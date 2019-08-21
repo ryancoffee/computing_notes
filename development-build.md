@@ -3,28 +3,34 @@ sudo apt update
 sudo apt -y install valgrind  
 
 ## Boost  
+```bash
 cd ${HOME}/Downloads  
-wget https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.bz2
+BOOSTVER='1.71.0'
+echo ${BOOSTVER}
+BOOSTVERSTR=`echo "${BOOSTVER}" | sed -e 's/\./_/g'`
+wget https://dl.bintray.com/boostorg/release/${BOOSTVER}/source/boost_${BOOSTVERSTR}.tar.bz2
 cd /usr/local  
-sudo tar -xjf ${HOME}/Downloads/boost_1_70_0.tar.bz2  
-rm ${HOME}/Downloads/boost_1_70_0.tar.bz2  
+sudo tar -xjf ${HOME}/Downloads/boost_${BOOSTVERSTR}.tar.bz2  
+rm ${HOME}/Downloads/boost_${BOOSTVERSTR}.tar.bz2  
 sudo mkdir -p /opt/boost  
-sudo ln -sf /usr/local/boost_1_70_0 /opt/boost/include  
+sudo ln -sf /usr/local/boost_${BOOSTVERSTR} /opt/boost/include  
+```
 
 # build and link  
-cd /usr/local/boost_1_70_0/  
+```bash
+cd /usr/local/boost_${BOOSTVERSTR}/  
 sudo ./bootstrap.sh  
 sudo ./b2 install
+```
 
-```
-I made it here 073119 on pavoni
-```
+I made it here 073119 on pavoni  
 
 ## OpenMP  
 Seems like this is already in modern c compilers, just using the -fopenmp flag in the compile  
 
 
 ## OpenMPI  
+```bash
 cd ${HOME}/Downloads   
 wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.2.tar.gz   
 cd /usr/local  
@@ -32,30 +38,58 @@ sudo tar -xzf ${HOME}/Downloads/openmpi-3.1.2.tar.gz
 cd openmpi-3.1.2  
 sudo ./configure  
 sudo make all install   
-# made it here so far  
+```
 
 
 ## FFTW3  
+```bash
 cd ${HOME}/Downloads  
-wget http://www.fftw.org/fftw-3.3.8.tar.gz  
+FFTWVER=3.3.8
+wget http://www.fftw.org/fftw-${FFTWVER}.tar.gz  
 cd /usr/local  
-sudo tar -xzf ${HOME}/Downloads/fftw-3.3.8.tar.gz  
+sudo tar -xzf ${HOME}/Downloads/fftw-${FFTWVER}.tar.gz  
 sudo wget http://www.fftw.org/fftw3.pdf  
-cd fftw-3.3.8  
+cd fftw-${FFTWVER}
 sudo ./configure --disable-fortran --enable-openmp --enable-threads --enable-single --with-gnu-ld  
+```
 	" only if building for TFLite or such acceleration in inferencing with FFTs --enable-single "  
 	" also can't seem to get --enable-mpi to work"   
+```bash
 sudo mkdir /opt/fftw3
-sudo ln -s /usr/local/fftw-3.3.8 /opt/fftw3/include
+sudo ln -s /usr/local/fftw-${FFTWVER} /opt/fftw3/include
+rm ${HOME}/Downloads/fftw-${FFTWVER}.tar.gz
+cd /usr/local/fftw-${FFTWVER}
+sudo ./configure  
+sudo make all install   
+```
+
+## OpenCV  
+```bash
+sudo apt -y install build-essential
+sudo apt -y install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+sudo apt -y install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
+cd ${HOME}/Downloads
+OPENCVVER=4.1.1
+wget https://github.com/opencv/opencv/archive/${OPENCVVER}.zip
+cd /usr/local
+sudo unzip ${HOME}/Downloads/${OPENCVVER}.zip -d ./
+cd opencv-${OPENCVVER}
+sudo mkdir build
+cd build
+```
+**I'm here at cd build/**
 
 # symlinking for sake of makefile ease
-coffee@pavoni:/usr/lib/x86_64-linux-gnu$ ls -a | grep fftw3
-coffee@pavoni:/usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3f_omp.so.3 libfftw3f_omp.so  
-coffee@pavoni:/usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3_omp.so.3 libfftw3_omp.so  
-coffee@pavoni:/usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3.so.3 libfftw3.so  
-coffee@pavoni:/usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3f.so.3 libfftw3f.so  
-coffee@pavoni:/usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3f_threads.so.3 libfftw3f_threads.so  
-coffee@pavoni:/usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3_threads.so.3 libfftw3_threads.so  
+```bash
+cd /usr/lib/x86_64-linux-gnu
+ls -a | grep fftw3
+sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3f_omp.so.3 libfftw3f_omp.so  
+sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3_omp.so.3 libfftw3_omp.so  
+sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3.so.3 libfftw3.so  
+sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3f.so.3 libfftw3f.so  
+sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3f_threads.so.3 libfftw3f_threads.so  
+sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3_threads.so.3 libfftw3_threads.so  
+```
 
 
 # or including fortran  
