@@ -14,6 +14,13 @@ sudo tar -xjf ${HOME}/Downloads/boost_${BOOSTVERSTR}.tar.bz2
 rm ${HOME}/Downloads/boost_${BOOSTVERSTR}.tar.bz2  
 sudo mkdir -p /opt/boost  
 sudo ln -sf /usr/local/boost_${BOOSTVERSTR} /opt/boost/include  
+sudo apt -y install libpython3.7-dev libboost-python-dev libboost-numpy-dev libboost-numpy3-dev
+sudo git clone https://github.com/ndarray/Boost.NumPy
+cd Boost.NumPy
+sudo mkdir build
+sudo cmake ..
+sudo make
+sudo make install
 ```
 
 # build and link  
@@ -76,7 +83,14 @@ sudo unzip ${HOME}/Downloads/${OPENCVVER}.zip -d ./
 cd opencv-${OPENCVVER}
 sudo mkdir build
 cd build
+sudo cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local ..
 ```
+** to build python into this build **
+	PYTHON2(3)_EXECUTABLE = /usr/bin/python3 \
+	PYTHON_INCLUDE_DIR = /usr/include/python3.7 \
+	PYTHON_INCLUDE_DIR2 = /usr/include/x86_64-linux-gnu/python3.7m \
+	PYTHON_LIBRARY = /usr/lib/x86_64-linux-gnu/libpython3.7m.so \
+	PYTHON2(3)_NUMPY_INCLUDE_DIRS = /usr/lib/python<version>/dist-packages/numpy/core/include/ \
 **I'm here at cd build/**
 
 # symlinking for sake of makefile ease
