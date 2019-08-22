@@ -1,6 +1,6 @@
 ## valgrind  
 sudo apt update  
-sudo apt -y install valgrind  
+sudo apt -y install valgrind cmake
 
 ## Boost  
 ```bash
@@ -14,10 +14,14 @@ sudo tar -xjf ${HOME}/Downloads/boost_${BOOSTVERSTR}.tar.bz2
 rm ${HOME}/Downloads/boost_${BOOSTVERSTR}.tar.bz2  
 sudo mkdir -p /opt/boost  
 sudo ln -sf /usr/local/boost_${BOOSTVERSTR} /opt/boost/include  
-sudo apt -y install libpython3.7-dev libboost-python-dev libboost-numpy-dev libboost-numpy3-dev
+```
+*This next bit seems not to work on the home machines*  
+```bash
+sudo apt -y install libpython3.7-dev libboost-python-dev libboost-numpy-dev #libboost-numpy3-dev
 sudo git clone https://github.com/ndarray/Boost.NumPy
 cd Boost.NumPy
 sudo mkdir build
+cd build
 sudo cmake ..
 sudo make
 sudo make install
@@ -70,28 +74,6 @@ sudo ./configure
 sudo make all install   
 ```
 
-## OpenCV  
-```bash
-sudo apt -y install build-essential
-sudo apt -y install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
-sudo apt -y install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
-cd ${HOME}/Downloads
-OPENCVVER=4.1.1
-wget https://github.com/opencv/opencv/archive/${OPENCVVER}.zip
-cd /usr/local
-sudo unzip ${HOME}/Downloads/${OPENCVVER}.zip -d ./
-cd opencv-${OPENCVVER}
-sudo mkdir build
-cd build
-sudo cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local ..
-```
-** to build python into this build **
-	PYTHON2(3)_EXECUTABLE = /usr/bin/python3 \
-	PYTHON_INCLUDE_DIR = /usr/include/python3.7 \
-	PYTHON_INCLUDE_DIR2 = /usr/include/x86_64-linux-gnu/python3.7m \
-	PYTHON_LIBRARY = /usr/lib/x86_64-linux-gnu/libpython3.7m.so \
-	PYTHON2(3)_NUMPY_INCLUDE_DIRS = /usr/lib/python<version>/dist-packages/numpy/core/include/ \
-**I'm here at cd build/**
 
 # symlinking for sake of makefile ease
 ```bash
@@ -105,12 +87,41 @@ sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3f_threads.so.3 libfftw3f_threads.so
 sudo ln -s /usr/lib/x86_64-linux-gnu/libfftw3_threads.so.3 libfftw3_threads.so  
 ```
 
-
 # or including fortran  
+```bash
 sudo ./configure --enable-openmp --enable-threads --enable-single --with-gnu-ld  
 sudo make
 sudo make install
+```
 # only succeed by ignoring MPI on both beanbox and roaster, 
+
+
+
+## OpenCV  
+
+```bash
+sudo apt -y install build-essential
+sudo apt -y install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+sudo apt -y install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
+cd ${HOME}/Downloads
+OPENCVVER=4.1.1
+wget https://github.com/opencv/opencv/archive/${OPENCVVER}.zip
+cd /usr/local
+sudo unzip ${HOME}/Downloads/${OPENCVVER}.zip -d ./
+cd opencv-${OPENCVVER}
+sudo mkdir build
+cd build
+sudo cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local \
+-DPYTHON3_EXECUTABLE=/usr/bin/python3 \
+-DPYTHON_INCLUDE_DIR=/usr/include/python3.7 \
+-DPYTHON_INCLUDE_DIR2=/usr/include/x86_64-linux-gnu/python3.7m \
+-DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.7m.so \
+-DPYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3.7/dist-packages/numpy/core/include/ ..
+sudo make
+sudo make install 
+```
+** to build python into this build **
+**I'm here at cd build/**
 
 ## Docker  
 read this: https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce  
