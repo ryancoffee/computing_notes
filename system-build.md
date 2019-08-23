@@ -43,6 +43,10 @@ cd ../
 rm -rf install-tl-*  
 
 ## pavoni/roaster/beanbox specifics
+for nvme to use xfs for performance  
+```bash
+sudo apt -y update
+sudo apt -y install xfslibs-dev xfsdump xfsprogs
 sudo addgroup data 
 sudo usermod -a -G data coffee
 sudo usermod -a -G data root
@@ -50,5 +54,6 @@ sudo chgrp data /data
 sudo chmod g+w /data
 sudo chown coffee /nvme
 sudo chgrp data /nvme
-sudo chmod g+w /nvme
+sudo chmod g+rwx /nvme
+```
 

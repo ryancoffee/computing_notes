@@ -6,8 +6,23 @@ sudo apt -y install valgrind cmake
 This gives the kind of performance filesystem for PCIe installed nvme drives as in beanbox and roaster  
 ```bash
 sudo apt -y install xfslibs-dev xfsdump xfsprogs
+lsblk  # to know what you're working with... and if mounted as /nvme
+sudo umount /nvme
+sudo parted /dev/nvme0n1 rm 1
+sudo parted /dev/nvme0n1 mklabel msdos
+sudo parted --align optimal /dev/nvme0n1 mkpart primary xfs 0% 100%
+sudo mkfs.xfs -L nvme -f /dev/nvme0n1
+sudo vim /etc/fstab
+sudo mkdir /nvme #if not existing already
+sudo mount -av
+sudo chown coffee /nvme
+sudo chgrp data /nvme
+sudo chmod g+rwx /nvme
 ```
-now attempting a reboot to see if this is now available in gnome-disks app for formatting the nvme
+now attempting a reboot to see if this is now available in gnome-disks app for formatting the nvme.  
+This didn't work... for nvme memory to be performance, we need to use parted to create the filesystem.  
+when editing /etc/fstab make sure the UUID bit is changed to LABEL=nvme
+
 
 
 
