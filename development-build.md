@@ -2,6 +2,15 @@
 sudo apt update  
 sudo apt -y install valgrind cmake
 
+## xfs  
+This gives the kind of performance filesystem for PCIe installed nvme drives as in beanbox and roaster  
+```bash
+sudo apt -y install xfslibs-dev xfsdump xfsprogs
+```
+now attempting a reboot to see if this is now available in gnome-disks app for formatting the nvme
+
+
+
 ## Boost  
 ```bash
 cd ${HOME}/Downloads  
