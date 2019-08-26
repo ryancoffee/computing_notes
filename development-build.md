@@ -28,6 +28,7 @@ when editing /etc/fstab make sure the UUID bit is changed to LABEL=nvme
 
 ## Boost  
 ```bash
+DIR=`pwd`
 cd ${HOME}/Downloads  
 BOOSTVER='1.71.0'
 echo ${BOOSTVER}
@@ -50,15 +51,13 @@ sudo cmake ..
 sudo make
 sudo make install
 ```
-
 # build and link  
 ```bash
 cd /usr/local/boost_${BOOSTVERSTR}/  
 sudo ./bootstrap.sh  
 sudo ./b2 install
+cd $DIR
 ```
-
-I made it here 073119 on pavoni  
 
 ## OpenMP  
 Seems like this is already in modern c compilers, just using the -fopenmp flag in the compile  
@@ -78,6 +77,7 @@ sudo make all install
 
 ## FFTW3  
 ```bash
+DIR=`pwd`
 cd ${HOME}/Downloads  
 FFTWVER=3.3.8
 wget http://www.fftw.org/fftw-${FFTWVER}.tar.gz  
@@ -90,16 +90,14 @@ sudo ./configure --disable-fortran --enable-openmp --enable-threads --enable-sin
 	" only if building for TFLite or such acceleration in inferencing with FFTs --enable-single "  
 	" also can't seem to get --enable-mpi to work"   
 ```bash
-sudo mkdir /opt/fftw3
-sudo ln -s /usr/local/fftw-${FFTWVER} /opt/fftw3/include
-rm ${HOME}/Downloads/fftw-${FFTWVER}.tar.gz
-cd /usr/local/fftw-${FFTWVER}
-sudo ./configure  
+sudo make
 sudo make all install   
+sudo mkdir /opt/fftw3
+sudo ln -sf /usr/local/fftw-${FFTWVER} /opt/fftw3/include
+rm ${HOME}/Downloads/fftw-${FFTWVER}.tar.gz
+cd $DIR 
 ```
-
-
-# symlinking for sake of makefile ease
+**symlinking for sake of makefile ease... this is important!**  
 ```bash
 cd /usr/lib/x86_64-linux-gnu
 ls -a | grep fftw3
@@ -124,9 +122,10 @@ sudo make install
 ## OpenCV  
 
 ```bash
+DIR=`pwd`
 sudo apt -y install build-essential
 sudo apt -y install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
-sudo apt -y install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
+sudo apt -y install python2-dev python3-numpy python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
 cd ${HOME}/Downloads
 OPENCVVER=4.1.1
 wget https://github.com/opencv/opencv/archive/${OPENCVVER}.zip
@@ -143,7 +142,9 @@ sudo cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local \
 -DPYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3.7/dist-packages/numpy/core/include/ ..
 sudo make
 sudo make install 
+cd $DIR
 ```
+
 ** to build python into this build **
 **I'm here at cd build/**
 
