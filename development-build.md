@@ -11,7 +11,8 @@ sudo umount /nvme
 sudo parted /dev/nvme0n1 rm 1
 sudo parted /dev/nvme0n1 mklabel msdos
 sudo parted --align optimal /dev/nvme0n1 mkpart primary xfs 0% 100%
-sudo mkfs.xfs -L nvme -f /dev/nvme0n1
+lsblk # pake sure the partition /dev/nvme0n1p1 exists
+sudo mkfs.xfs -L nvme -f /dev/nvme0n1p1
 sudo vim /etc/fstab
 sudo mkdir /nvme #if not existing already
 sudo mount -av
