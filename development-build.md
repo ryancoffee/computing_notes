@@ -144,10 +144,45 @@ sudo cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local \
 sudo make
 sudo make install 
 cd $DIR
+sudo ln -sf /usr/local/opencv-4.1.1/build/lib /usr/local/lib/opencv
 ```
+## OpenCV4 retry
+When building with GStreamer add 
+`pkg-config --cflags --libs gstreamer-1.0` to the gcc command
+```bash
+DIR = `pwd'
+sudo apt -y install libopencv-dev build-essential cmake libdc1394-22 libdc1394-22-dev libjpeg-dev libpng-dev libtiff5-dev libavcodec-dev libavformat-dev libswscale-dev libxine2-dev libgstreamer-opencv1.0-0 libgstreamer1.0-0 libtbb-dev libqt4-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 
+sudo apt -y install libgtk-3-dev libblas-dev libblas-doc liblapack-dev liblapack-doc checkinstall libeigen-stl-containers-dev libeigen3-dev default-jre default-jdk
+sudo apt -y install libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+cd /usr/local
+sudo apt -y install llibcanberra-gtk-modu leibcanberra-gtk3-module
+sudo git clone https://github.com/opencv/opencv.git
+sudo git clone https://github.com/opencv/opencv_contrib.git
+sudo mkdir ./opencv/build
+cd !$
+sudo cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local/opencv/build -DINSTALL_C_EXAMPLES=ON -DBUILD_EXAMPLES=ON -DOPENCV_EXTRA_MODULES_PATH=/usr/local/opencv_contrib/modules ../
+sudo make -j4
+sudo make install
+```
+It seems that we **may** need the file   
+/usr/local/lib/pkgconfig/opencv4.pc  
+with contents:
+```bash
+prefix=/usr/local
+exec_prefix=${prefix}/opencv4
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
 
-** to build python into this build **
-**I'm here at cd build/**
+Name: OpenCV
+Description: OpenCV for computer vision
+Version: 4.1.1
+Libs: -L${libdir} -lopencv4
+Libs.private: -lm
+Cflags: -I${includedir}
+```
+adding the line **CVFLAGS= -ggdb `pkg-config --cflags --libs opencv`** to the makefile **now works**    
+
+
 
 ## Docker  
 read this: https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce  
