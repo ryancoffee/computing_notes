@@ -150,12 +150,12 @@ sudo ln -sf /usr/local/opencv-4.1.1/build/lib /usr/local/lib/opencv
 When building with GStreamer add 
 `pkg-config --cflags --libs gstreamer-1.0` to the gcc command
 ```bash
-DIR = `pwd'
+DIR=`pwd`
 sudo apt -y install libopencv-dev build-essential cmake libdc1394-22 libdc1394-22-dev libjpeg-dev libpng-dev libtiff5-dev libavcodec-dev libavformat-dev libswscale-dev libxine2-dev libgstreamer-opencv1.0-0 libgstreamer1.0-0 libtbb-dev libqt4-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 
-sudo apt -y install libgtk-3-dev libblas-dev libblas-doc liblapack-dev liblapack-doc checkinstall libeigen-stl-containers-dev libeigen3-dev default-jre default-jdk
+sudo apt -y install libgtk-3-dev libblas-dev liblapack-dev liblapack-doc checkinstall libeigen-stl-containers-dev libeigen3-dev default-jre default-jdk
 sudo apt -y install libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+sudo apt -y install libcanberra-gtk-modu libcanberra-gtk3-module
 cd /usr/local
-sudo apt -y install llibcanberra-gtk-modu leibcanberra-gtk3-module
 sudo git clone https://github.com/opencv/opencv.git
 sudo git clone https://github.com/opencv/opencv_contrib.git
 sudo mkdir ./opencv/build
