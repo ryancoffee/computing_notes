@@ -180,9 +180,13 @@ Libs: -L${libdir} -lopencv4
 Libs.private: -lm
 Cflags: -I${includedir}
 ```
+**Also, it seems the libopencv4.1.1.so is not in or linked in /usr/local/opencv/build/lib/ so need to copy that from somewhere.**
+	OK, his is nuts.  Now I'm removing the opencv_contrib to see if that helps  
 adding the line **CVFLAGS= -ggdb `pkg-config --cflags --libs opencv`** to the makefile **now works**    
 
-
+## Fall back OpenCV 3.2
+sudo apt -y install cl-opencv-apps gstreamer1.0-opencv libcv-bridge-dev libgstreamer-opencv1.0-0 libopencv-apps-dev libopencv-calib3d-dev libopencv-contrib-dev libopencv-core-dev libopencv-dev libopencv-features2d-dev libopencv-flann-dev libopencv-highgui-dev libopencv-imgcodecs-dev libopencv-imgproc-dev libopencv-ml-dev libopencv-objdetect-dev libopencv-photo-dev libopencv-shape-dev libopencv-stitching-dev libopencv-superres-dev libopencv-ts-dev libopencv-video-dev libopencv-videoio-dev libopencv-videostab-dev libopencv-viz-dev libopencv3.2-java libopencv3.2-jni node-opencv opencv-data opencv-doc python-cv-bridge python-image-geometry python-opencv python-opencv-apps python-remotecv python3-image-geometry python3-opencv python3-opencv-apps
+#OpenCV seems not to install on the coffee-T3500 machine
 
 ## Docker  
 read this: https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce  
