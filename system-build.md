@@ -18,8 +18,10 @@ sudo systemctl restart ssh
 
 ## Python and pip  
 sudo apt -y install python3-venv python3-pip python3-setuptools  
-sudo apt -y install python-pip python-setuptools  
-pip3 install numpy scipy tensorflow  
+sudo apt -y install python-pip python-setuptools    
+pip3 install numpy scipy sklearn   
+# maybe wait to do tensorflow2.0 as a source build  
+pip3 install tensorflow   
 pip install numpy scipy	tensorflow    
 
 ## Nice extras for GUI   
@@ -32,6 +34,18 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome*.deb  
 rm google-chrome*.deb  
 cd -
+
+
+## 2020 update latex 
+cd ~/Downloads  
+wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+wget http://mirrors.ctan.org/macros/latex/contrib/revtex.zip
+sudo unzip revtex.zip -d /usr/local/texlive/
+cd install-tl-*/
+sudo ./install-tl  
+cd ../  
+rm -rf install-tl-*  
+
 
 ## latex  
 cd ~/Downloads  
