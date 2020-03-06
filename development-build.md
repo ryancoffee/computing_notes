@@ -1,5 +1,5 @@
 ## valgrind  
-sudo apt update  
+sudo apt -y update  
 sudo apt -y install valgrind cmake
 
 ## xfs  
@@ -25,13 +25,19 @@ This didn't work... for nvme memory to be performance, we need to use parted to 
 when editing /etc/fstab make sure the UUID bit is changed to LABEL=nvme
 
 
+## h5py
+```bash
+pip3 install h5py
+cd ${HOME}/Downloads
+wget https://www.hdfgroup.org/downloads/hdf5/source-code/#
+```
 
 
 ## Boost  
 ```bash
 DIR=`pwd`
 cd ${HOME}/Downloads  
-BOOSTVER='1.71.0'
+BOOSTVER='1.72.0'
 echo ${BOOSTVER}
 BOOSTVERSTR=`echo "${BOOSTVER}" | sed -e 's/\./_/g'`
 wget https://dl.bintray.com/boostorg/release/${BOOSTVER}/source/boost_${BOOSTVERSTR}.tar.bz2
@@ -154,6 +160,7 @@ DIR=`pwd`
 sudo apt -y install libopencv-dev build-essential cmake libdc1394-22 libdc1394-22-dev libjpeg-dev libpng-dev libtiff5-dev libavcodec-dev libavformat-dev libswscale-dev libxine2-dev libgstreamer-opencv1.0-0 libgstreamer1.0-0 libtbb-dev libqt4-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 
 sudo apt -y install libgtk-3-dev libblas-dev liblapack-dev liblapack-doc checkinstall libeigen-stl-containers-dev libeigen3-dev default-jre default-jdk
 sudo apt -y install libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+========================================================== HERE HERE HERE ============================ building OpenCV4 but aim for 4.2.0 version Home machines
 sudo apt -y install libcanberra-gtk-modu libcanberra-gtk3-module
 cd /usr/local
 sudo git clone https://github.com/opencv/opencv.git
@@ -187,6 +194,8 @@ adding the line **CVFLAGS= -ggdb `pkg-config --cflags --libs opencv`** to the ma
 ## Fall back OpenCV 3.2
 sudo apt -y install cl-opencv-apps gstreamer1.0-opencv libcv-bridge-dev libgstreamer-opencv1.0-0 libopencv-apps-dev libopencv-calib3d-dev libopencv-contrib-dev libopencv-core-dev libopencv-dev libopencv-features2d-dev libopencv-flann-dev libopencv-highgui-dev libopencv-imgcodecs-dev libopencv-imgproc-dev libopencv-ml-dev libopencv-objdetect-dev libopencv-photo-dev libopencv-shape-dev libopencv-stitching-dev libopencv-superres-dev libopencv-ts-dev libopencv-video-dev libopencv-videoio-dev libopencv-videostab-dev libopencv-viz-dev libopencv3.2-java libopencv3.2-jni node-opencv opencv-data opencv-doc python-cv-bridge python-image-geometry python-opencv python-opencv-apps python-remotecv python3-image-geometry python3-opencv python3-opencv-apps
 #OpenCV seems not to install on the coffee-T3500 machine
+
+## Opencv-4.2.0
 
 ## Docker  
 read this: https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce  
