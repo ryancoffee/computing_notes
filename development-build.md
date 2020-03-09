@@ -25,12 +25,19 @@ This didn't work... for nvme memory to be performance, we need to use parted to 
 when editing /etc/fstab make sure the UUID bit is changed to LABEL=nvme
 
 
-## h5py
+## h5py  
 ```bash
 pip3 install h5py
 cd ${HOME}/Downloads
 wget https://www.hdfgroup.org/downloads/hdf5/source-code/#
 ```
+
+##LeCroy Parser for .trc files  
+```bash
+pip3 install lecroyparser
+```
+This you can use to see the dimensions of the data and from that infer the header.  Then you can just skip the header and do a binary read of the file.  
+This would likely save memory since the binary read has only one byte per sample, but the lecroyparser scales the data by voltage and so has to use 4 bytes for the 32 bit floats.  
 
 
 ## Boost  
@@ -160,8 +167,8 @@ DIR=`pwd`
 sudo apt -y install libopencv-dev build-essential cmake libdc1394-22 libdc1394-22-dev libjpeg-dev libpng-dev libtiff5-dev libavcodec-dev libavformat-dev libswscale-dev libxine2-dev libgstreamer-opencv1.0-0 libgstreamer1.0-0 libtbb-dev libqt4-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 
 sudo apt -y install libgtk-3-dev libblas-dev liblapack-dev liblapack-doc checkinstall libeigen-stl-containers-dev libeigen3-dev default-jre default-jdk
 sudo apt -y install libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+sudo apt -y install libcanberra-gtk-module libcanberra-gtk3-module
 ========================================================== HERE HERE HERE ============================ building OpenCV4 but aim for 4.2.0 version Home machines
-sudo apt -y install libcanberra-gtk-modu libcanberra-gtk3-module
 cd /usr/local
 sudo git clone https://github.com/opencv/opencv.git
 sudo git clone https://github.com/opencv/opencv_contrib.git
