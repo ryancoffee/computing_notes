@@ -6,6 +6,7 @@ git config --global user.email "coffeer76@gmail.com"
 git config --global user.name "Ryan Coffee"  
 
 
+
 ## This is for building and getting ssh running  
 
 coffee@beanbox:~$ ip route | grep default  
@@ -71,3 +72,29 @@ sudo chgrp data /nvme
 sudo chmod g+rwx /nvme
 ```
 
+## headless for nvme addition
+updating /etc/fstab with sudo on roaster... running it headless (no GPU/videocard at all)   
+```
+#LABEL=nvme                               /nvme           xfs     defaults        0       2
+UUID=b61f6e8f-9d86-4432-92c2-2574621d79cf /nvme           xfs     defaults        0       2
+UUID=832acdf0-6491-499f-8bbe-bf2dc946fcad /nvme1TB        xfs     defaults        0       2
+/swapfile                                 none            swap    sw              0       0
+```
+for instance, this is how we find the UUID for the drives... and indeed using the UUID is a more robust way to keep track of the devices.  
+```
+coffee@roaster:/$ sudo blkid /dev/nvme0n1p1 
+/dev/nvme0n1p1: LABEL="nvme1TB" UUID="832acdf0-6491-499f-8bbe-bf2dc946fcad" TYPE="xfs" PARTUUID="b96ae363-01"
+coffee@roaster:/$ sudo blkid /dev/nvme1n1p1 
+/dev/nvme1n1p1: LABEL="nvme" UUID="b61f6e8f-9d86-4432-92c2-2574621d79cf" TYPE="xfs" PARTUUID="f488b8f7-01"
+coffee@roaster:/$ vim /etc/fstab 
+```
+
+## headless startup disk creator  
+The GUI for startup disk creator is...  
+```
+currentdir=`pwd`
+cd $HOME/Downloads
+wget http://releases.ubuntu.com/20.04/ubuntu-20.04-beta-desktop-amd64.iso  
+usb-creator-gtk
+```
+This doesn't seem to work.  
