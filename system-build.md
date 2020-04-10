@@ -20,9 +20,9 @@ sudo systemctl restart ssh
 ## Python and pip  
 sudo apt -y install python3-venv python3-pip python3-setuptools  
 sudo apt -y install python-pip python-setuptools    
-pip3 install numpy scipy sklearn   
+pip install --upgrade pip
+pip3 install --user numpy scipy sklearn tensorflow
 # maybe wait to do tensorflow2.0 as a source build  
-pip3 install tensorflow   
 pip install numpy scipy	tensorflow    
 
 ## Nice extras for GUI   
