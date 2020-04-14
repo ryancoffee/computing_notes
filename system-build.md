@@ -6,7 +6,6 @@ git config --global user.email "coffeer76@gmail.com"
 git config --global user.name "Ryan Coffee"  
 
 
-
 ## This is for building and getting ssh running  
 
 coffee@beanbox:~$ ip route | grep default  
@@ -71,6 +70,9 @@ sudo chown coffee /nvme
 sudo chgrp data /nvme
 sudo chmod g+rwx /nvme
 ```
+
+## building with NVMe available to the installer  
+https://www.dell.com/support/article/en-us/sln299303/loading-ubuntu-on-systems-using-pcie-m2-drives?lang=en
 
 ## headless for nvme addition
 updating /etc/fstab with sudo on roaster... running it headless (no GPU/videocard at all)   

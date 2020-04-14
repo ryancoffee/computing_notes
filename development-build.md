@@ -164,7 +164,8 @@ When building with GStreamer add
 `pkg-config --cflags --libs gstreamer-1.0` to the gcc command
 ```bash
 DIR=`pwd`
-sudo apt -y install libopencv-dev build-essential cmake libdc1394-22 libdc1394-22-dev libjpeg-dev libpng-dev libtiff5-dev libavcodec-dev libavformat-dev libswscale-dev libxine2-dev libgstreamer-opencv1.0-0 libgstreamer1.0-0 libtbb-dev libqt4-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 
+sudo apt -y install libopencv-dev build-essential cmake libdc1394-22 libdc1394-22-dev libjpeg-dev libpng-dev libtiff5-dev libavcodec-dev libavformat-dev libswscale-dev libxine2-dev libgstreamer-opencv1.0-0 libgstreamer1.0-0 libtbb-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 
+sudo apt -y install qtbase5-dev
 sudo apt -y install libgtk-3-dev libblas-dev liblapack-dev liblapack-doc checkinstall libeigen-stl-containers-dev libeigen3-dev default-jre default-jdk
 sudo apt -y install libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
 sudo apt -y install libcanberra-gtk-module libcanberra-gtk3-module
@@ -173,7 +174,7 @@ cd /usr/local
 sudo git clone https://github.com/opencv/opencv.git
 sudo git clone https://github.com/opencv/opencv_contrib.git
 sudo mkdir ./opencv/build
-cd !$
+cd ./opencv/build 
 sudo cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local/opencv/build -DINSTALL_C_EXAMPLES=ON -DBUILD_EXAMPLES=ON -DOPENCV_EXTRA_MODULES_PATH=/usr/local/opencv_contrib/modules ../
 sudo make -j4
 sudo make install
@@ -203,6 +204,15 @@ sudo apt -y install cl-opencv-apps gstreamer1.0-opencv libcv-bridge-dev libgstre
 #OpenCV seems not to install on the coffee-T3500 machine
 
 ## Opencv-4.2.0
+
+## Opencv-4.3.0
+# not really doing this one now...  
+```bash
+curdir=`pwd`
+cd ${HOME}/Downloads
+git clone https://github.com/opencv/opencv.git
+```
+
 
 ## Docker  
 read this: https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce  
@@ -287,7 +297,26 @@ pip install pyopencl  ## also seems to fail the same way ##
 ## HDF5  
 http://docs.h5py.org/en/stable/build.html
 https://www.hdfgroup.org/downloads/hdf5/source-code/
-git clone https://github.com/live-clones/hdf5.git
+```bash
+cd ${HOME}/Downloads
+wget http://prdownloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz
+cd /usr/local
+tar -xzf ${HOME}/Downloads/zlib-1.2.11.tar.gz
+sudo make ./zlib-1.2.11/build
+cd ./zlib-1.2.11/build
+sudo ../configure
+sudo make
+sudo make install
+cd /usr/local
+sudo git clone https://github.com/live-clones/hdf5.git
+cd hdf5
+sudo mkdir build
+cd build
+sudo ../configure --prefix=/usr/local --with-gnu-ld --enable-cxx
+sudo make
+sudo make install
+pip3 install h5py
+```
 
 ## Used for Bazel   
 # maybe going to stick with make until absolutely necessary
