@@ -17,7 +17,7 @@ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.factory-defaults
 sudo systemctl restart ssh  
 
 ## Python and pip  
-sudo apt -y install python3-venv python3-pip python3-setuptools  
+sudo apt -y install python3-venv python3-dev python3-pip python3-setuptools  
 sudo apt -y install python-pip python-setuptools    
 pip install --upgrade pip
 pip3 install --user numpy scipy sklearn tensorflow

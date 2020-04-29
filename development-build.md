@@ -98,7 +98,7 @@ wget http://www.fftw.org/fftw-${FFTWVER}.tar.gz
 cd /usr/local  
 sudo tar -xzf ${HOME}/Downloads/fftw-${FFTWVER}.tar.gz  
 sudo wget http://www.fftw.org/fftw3.pdf  
-cd fftw-${FFTWVER}
+cd /usr/local/fftw-${FFTWVER}
 sudo ./configure --disable-fortran --enable-openmp --enable-threads --enable-single --with-gnu-ld  
 ```
 	" only if building for TFLite or such acceleration in inferencing with FFTs --enable-single "  
@@ -134,14 +134,15 @@ sudo make install
 
 
 ## OpenCV  
-
+Updated to python3.8, opencv-4.2.0 ... I think...  
+*OK this seems to work*  
 ```bash
 DIR=`pwd`
 sudo apt -y install build-essential
 sudo apt -y install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 sudo apt -y install python2-dev python3-numpy python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
 cd ${HOME}/Downloads
-OPENCVVER=4.1.1
+OPENCVVER=4.2.0
 wget https://github.com/opencv/opencv/archive/${OPENCVVER}.zip
 cd /usr/local
 sudo unzip ${HOME}/Downloads/${OPENCVVER}.zip -d ./
@@ -150,16 +151,18 @@ sudo mkdir build
 cd build
 sudo cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local \
 -DPYTHON3_EXECUTABLE=/usr/bin/python3 \
--DPYTHON_INCLUDE_DIR=/usr/include/python3.7 \
--DPYTHON_INCLUDE_DIR2=/usr/include/x86_64-linux-gnu/python3.7m \
--DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.7m.so \
--DPYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3.7/dist-packages/numpy/core/include/ ..
+-DPYTHON_INCLUDE_DIR=/usr/include/python3.8 \
+-DPYTHON_INCLUDE_DIR2=/usr/include/x86_64-linux-gnu/python3.8m \
+-DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.8m.so \
+-DPYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3.8/dist-packages/numpy/core/include/ ..
 sudo make
 sudo make install 
 cd $DIR
-sudo ln -sf /usr/local/opencv-4.1.1/build/lib /usr/local/lib/opencv
-```
+sudo ln -sf /usr/local/opencv-${OPENCVVER}/build/lib /usr/local/lib/opencv
+```  
+
 ## OpenCV4 retry
+*likely not necessary below here*  
 When building with GStreamer add 
 `pkg-config --cflags --libs gstreamer-1.0` to the gcc command
 ```bash
