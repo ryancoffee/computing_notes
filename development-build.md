@@ -136,32 +136,67 @@ sudo make install
 ## OpenCV  
 Updated to python3.8, opencv-4.2.0 ... I think...  
 *OK this seems to work*  
-```bash
-DIR=`pwd`
+  
+Nevermind... also noticed we need to find lapacka nd openblas   
+Trying this first and then rebuilding   
+Still Trying   
+First install Eigen (this is a headers only library, but hten point openCV to it)  
+```bash  
+cd ${HOME}/Downloads
+wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.gz
+cd /usr/local/include
+sudo tar -xzf ${HOME}/Downloads/eigen-3.3.7.tar.gz
+sudo ln -sf /usr/local/include/eigen-3.3.7/Eigen /usr/local/include/Eigen
+```  
+
+```bash  
 sudo apt -y install build-essential
 sudo apt -y install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 sudo apt -y install python2-dev python3-numpy python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
-cd ${HOME}/Downloads
-OPENCVVER=4.2.0
-wget https://github.com/opencv/opencv/archive/${OPENCVVER}.zip
+sudo apt install -y libblas-dev libblas64-dev libopenblas-base libopenblas-dev libopenblas-openmp-dev libopenblas-pthread-dev libopenblas-serial-dev mlpack-bin mlpack-doc python3-cvxopt python3-mlpack liblapack64-3 liblapack64-dev
+sudo apt install -y libjs-jquery-ui-docs tcl8.6 tk8.6
+sudo apt install -y gstreamer1.0-qt5 gstreamer1.0-plugins-base gstreamer1.0-opencv
+sudo apt install -y python-attr-doc python-cvxopt-doc python-cycler-doc python3-genshi python3-lxml-dbg python-lxml-doc dvipng ffmpeg inkscape ipython3 python-matplotlib-doc python3-cairocffi python3-nose
+sudo apt install -y python3-pyqt5 python3-sip python3-tornado texlive-extra-utils texlive-latex-extra ttf-staypuft python-pandas-doc python3-statsmodels subversion python-pyparsing-doc python-scipy-doc python3-netcdf4 python-tables-doc vitables tix python3-tk-dbg
+sudo apt install -y libcusolver10 libcusolvermg10 libmkl-full-dev libmkl-scalapack-ilp64 libmkl-scalapack-lp64
+sudo apt -y install qtbase5-dev qtdeclarative5-dev
+sudo apt -y install opencl-headers ocl-icd-libopencl1
 cd /usr/local
-sudo unzip ${HOME}/Downloads/${OPENCVVER}.zip -d ./
-cd opencv-${OPENCVVER}
-sudo mkdir build
-cd build
-sudo cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local \
+sudo git clone https://github.com/opencv/opencv.git
+sudo git clone https://github.com/opencv/opencv_contrib.git
+sudo mkdir -p /usr/local/opencv/build
+cd !$
+```  
+*Old method... keeps failing on roaster*   
+... trying now to turn off Eigen and the examples  
+... this seems to have done it.  
+```bash
+sudo cmake -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_INSTALL_PREFIX=/usr/local/opencv-4.2.0/build/ \
+-DINSTALL_C_EXAMPLES=OFF \
+-DBUILD_EXAMPLES=OFF \
+-DWITH_EIGEN=OFF \
+-DWITH_LAPACK=ON \ 
+-DWITH_OPENGL=ON \
+-DWITH_QT=ON \
 -DPYTHON3_EXECUTABLE=/usr/bin/python3 \
 -DPYTHON_INCLUDE_DIR=/usr/include/python3.8 \
 -DPYTHON_INCLUDE_DIR2=/usr/include/x86_64-linux-gnu/python3.8m \
 -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.8m.so \
--DPYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3.8/dist-packages/numpy/core/include/ ..
-sudo make
+-DPYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3.8/dist-packages/numpy/core/include/ \
+-DOPENCV_EXTRA_MODULES_PATH=/usr/local/opencv_contrib/modules ..
+sudo make -j4 
 sudo make install 
 cd $DIR
-sudo ln -sf /usr/local/opencv-${OPENCVVER}/build/lib /usr/local/lib/opencv
-```  
+```   
+* trying to not do this *   
+```sudo ln -sf /usr/local/opencv-${OPENCVVER}/build/lib /usr/local/lib/opencv```  
+Let's see how this works.
 
-## OpenCV4 retry
+
+
+
+OpenCV4 failed retry   
 *likely not necessary below here*  
 When building with GStreamer add 
 `pkg-config --cflags --libs gstreamer-1.0` to the gcc command
