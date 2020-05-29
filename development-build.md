@@ -155,24 +155,35 @@ sudo apt -y install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavforma
 sudo apt -y install python2-dev python3-numpy python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
 sudo apt install -y libblas-dev libblas64-dev libopenblas-base libopenblas-dev libopenblas-openmp-dev libopenblas-pthread-dev libopenblas-serial-dev mlpack-bin mlpack-doc python3-cvxopt python3-mlpack liblapack64-3 liblapack64-dev
 sudo apt install -y libjs-jquery-ui-docs tcl8.6 tk8.6
+```  
+
+#HERE HERE HERE HERE#
+*try removing gstreamer1.0-opencv and purge the system of opencv that might be conflicting with this opencv4*
 sudo apt install -y gstreamer1.0-qt5 gstreamer1.0-plugins-base gstreamer1.0-opencv
+
+```bash  
 sudo apt install -y python-attr-doc python-cvxopt-doc python-cycler-doc python3-genshi python3-lxml-dbg python-lxml-doc dvipng ffmpeg inkscape ipython3 python-matplotlib-doc python3-cairocffi python3-nose
 sudo apt install -y python3-pyqt5 python3-sip python3-tornado texlive-extra-utils texlive-latex-extra ttf-staypuft python-pandas-doc python3-statsmodels subversion python-pyparsing-doc python-scipy-doc python3-netcdf4 python-tables-doc vitables tix python3-tk-dbg
 sudo apt install -y libcusolver10 libcusolvermg10 libmkl-full-dev libmkl-scalapack-ilp64 libmkl-scalapack-lp64
 sudo apt -y install qtbase5-dev qtdeclarative5-dev
 sudo apt -y install opencl-headers ocl-icd-libopencl1
+cd ${HOME}/Downloads
+cvVersion=4.2.0
+wget https://github.com/opencv/opencv/archive/${cvVersion}.tar.gz -O opencv.tar.gz
+wget https://github.com/opencv/opencv/opencv_contrib/archive/${cvVersion}.tar.gz -O opencv_contrib.tar.gz
 cd /usr/local
-sudo git clone https://github.com/opencv/opencv.git
-sudo git clone https://github.com/opencv/opencv_contrib.git
-sudo mkdir -p /usr/local/opencv/build
-cd !$
+sudo tar -xzf ${HOME}/Downloads/opencv.tar.gz
+sudo tar -xzf ${HOME}/Downloads/opencv_contrib.tar.gz
+sudo mkdir -p /usr/local/opencv-${cvVersion}/build
+cd /usr/local/opencv-${cvVersion}/build
 ```  
 *Old method... keeps failing on roaster*   
 ... trying now to turn off Eigen and the examples  
 ... this seems to have done it.  
 ```bash
 sudo cmake -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_INSTALL_PREFIX=/usr/local/opencv-4.2.0/build/ \
+-DCMAKE_INSTALL_PREFIX=/usr/local \
+-DOPENCV_EXTRA_MODULES_PATH=/usr/local/opencv_contrib-${cvVersion}/modules \
 -DINSTALL_C_EXAMPLES=OFF \
 -DBUILD_EXAMPLES=OFF \
 -DWITH_EIGEN=OFF \
@@ -184,15 +195,19 @@ sudo cmake -DCMAKE_BUILD_TYPE=Release \
 -DPYTHON_INCLUDE_DIR2=/usr/include/x86_64-linux-gnu/python3.8m \
 -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.8m.so \
 -DPYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3.8/dist-packages/numpy/core/include/ \
--DOPENCV_EXTRA_MODULES_PATH=/usr/local/opencv_contrib/modules ..
+..
 sudo make -j4 
 sudo make install 
+sudo make uninstall
+sudo rm /usr/local/{bin,lib}/*opencv*
+sudo rm /usr/local/opencv-${cvVersion}/build/{bin,lib}/*opencv*
+sudo make install
 cd $DIR
 ```   
-* trying to not do this *   
-```sudo ln -sf /usr/local/opencv-${OPENCVVER}/build/lib /usr/local/lib/opencv```  
 Let's see how this works.
 
+sudo ln -df /usr/local/lib/libopencv_core.so.4.2.0 ../../build/lib/libopencv_core.so.4.2
+```sudo ln -sf /usr/local/opencv-${cvVersion}/build/lib /usr/local/lib/opencv4```
 
 
 
