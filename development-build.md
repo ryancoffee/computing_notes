@@ -1,6 +1,12 @@
 ## valgrind  
+```bash
 sudo apt -y update  
-sudo apt -y install valgrind cmake
+sudo apt -y install valgrind cmake lm-sensors hddtemp
+```
+then test sensors in a terminal with 
+```bash
+watch -n 2 sensors
+
 
 ## xfs  
 This gives the kind of performance filesystem for PCIe installed nvme drives as in beanbox and roaster  
@@ -44,15 +50,15 @@ This would likely save memory since the binary read has only one byte per sample
 ```bash
 DIR=`pwd`
 cd ${HOME}/Downloads  
-BOOSTVER='1.72.0'
+BOOSTVER='1.73.0'
 echo ${BOOSTVER}
 BOOSTVERSTR=`echo "${BOOSTVER}" | sed -e 's/\./_/g'`
 wget https://dl.bintray.com/boostorg/release/${BOOSTVER}/source/boost_${BOOSTVERSTR}.tar.bz2
 cd /usr/local  
 sudo tar -xjf ${HOME}/Downloads/boost_${BOOSTVERSTR}.tar.bz2  
 rm ${HOME}/Downloads/boost_${BOOSTVERSTR}.tar.bz2  
-sudo mkdir -p /opt/boost  
-sudo ln -sf /usr/local/boost_${BOOSTVERSTR} /opt/boost/include  
+#sudo mkdir -p /opt/boost  
+#sudo ln -sf /usr/local/boost_${BOOSTVERSTR} /opt/boost/include  
 ```
 *This next bit seems not to work on the home machines*  
 ```bash
@@ -70,6 +76,7 @@ sudo make install
 cd /usr/local/boost_${BOOSTVERSTR}/  
 sudo ./bootstrap.sh  
 sudo ./b2 install
+sudo ./b2 headers
 cd $DIR
 ```
 
