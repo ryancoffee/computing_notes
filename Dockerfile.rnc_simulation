@@ -1,0 +1,24 @@
+#FROM pshub01:5000/devtools:8.0.0
+# 8.1.0 has pyrogue
+FROM pshub01:5000/ml-cpu:8.0.0
+LABEL maintainer "Ryan Coffee <coffee@slac.stanford.edu>"
+
+RUN groupadd -g 1102 pl && \
+    groupadd -g 3140 coffee_group && \
+    useradd -u 9203 -g 1102 coffee
+
+COPY coffee/.bashrc /home/coffee/.bash_profile
+COPY coffee/.bashrc /home/coffee/.bashrc 
+COPY coffee/.vimrc /home/coffee/.vimrc 
+RUN chown coffee:pl /home/coffee/.bashrc && \
+    chown coffee:pl /home/coffee/.bash_profile && \
+    chown coffee:pl /home/coffee/.vimrc
+
+RUN git config --global user.email "coffeer76@gmail.com" && \
+	git config --global user.name "ryancoffee"
+
+RUN echo /opt/opencv/lib64 > /etc/ld.so.conf.d/opencv.conf && \
+	ldconfig -v
+
+WORKDIR "/home/coffee"
+USER coffee:pl

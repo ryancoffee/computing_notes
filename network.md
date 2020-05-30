@@ -14,7 +14,6 @@ operation mode is wireless router
 Set both ARP MAC/IP binding and Address Reservation (in DHCP menu) 
 
 #/etc/hosts  
-```
 127.0.0.1       localhost
 127.0.0.1       pavoni  
 192.168.0.103   pavoni
@@ -27,5 +26,4 @@ fe00::0 ip6-localnet
 ff00::0 ip6-mcastprefix
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
-```  
 

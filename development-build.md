@@ -1,6 +1,12 @@
 ## valgrind  
-sudo apt update  
-sudo apt -y install valgrind cmake
+```bash
+sudo apt -y update  
+sudo apt -y install valgrind cmake lm-sensors hddtemp
+```
+then test sensors in a terminal with 
+```bash
+watch -n 2 sensors
+
 
 ## xfs  
 This gives the kind of performance filesystem for PCIe installed nvme drives as in beanbox and roaster  
@@ -25,21 +31,34 @@ This didn't work... for nvme memory to be performance, we need to use parted to 
 when editing /etc/fstab make sure the UUID bit is changed to LABEL=nvme
 
 
+## h5py  
+```bash
+pip3 install h5py
+cd ${HOME}/Downloads
+wget https://www.hdfgroup.org/downloads/hdf5/source-code/#
+```
+
+##LeCroy Parser for .trc files  
+```bash
+pip3 install lecroyparser
+```
+This you can use to see the dimensions of the data and from that infer the header.  Then you can just skip the header and do a binary read of the file.  
+This would likely save memory since the binary read has only one byte per sample, but the lecroyparser scales the data by voltage and so has to use 4 bytes for the 32 bit floats.  
 
 
 ## Boost  
 ```bash
 DIR=`pwd`
 cd ${HOME}/Downloads  
-BOOSTVER='1.71.0'
+BOOSTVER='1.73.0'
 echo ${BOOSTVER}
 BOOSTVERSTR=`echo "${BOOSTVER}" | sed -e 's/\./_/g'`
 wget https://dl.bintray.com/boostorg/release/${BOOSTVER}/source/boost_${BOOSTVERSTR}.tar.bz2
 cd /usr/local  
 sudo tar -xjf ${HOME}/Downloads/boost_${BOOSTVERSTR}.tar.bz2  
 rm ${HOME}/Downloads/boost_${BOOSTVERSTR}.tar.bz2  
-sudo mkdir -p /opt/boost  
-sudo ln -sf /usr/local/boost_${BOOSTVERSTR} /opt/boost/include  
+#sudo mkdir -p /opt/boost  
+#sudo ln -sf /usr/local/boost_${BOOSTVERSTR} /opt/boost/include  
 ```
 *This next bit seems not to work on the home machines*  
 ```bash
@@ -57,6 +76,7 @@ sudo make install
 cd /usr/local/boost_${BOOSTVERSTR}/  
 sudo ./bootstrap.sh  
 sudo ./b2 install
+sudo ./b2 headers
 cd $DIR
 ```
 
@@ -85,7 +105,7 @@ wget http://www.fftw.org/fftw-${FFTWVER}.tar.gz
 cd /usr/local  
 sudo tar -xzf ${HOME}/Downloads/fftw-${FFTWVER}.tar.gz  
 sudo wget http://www.fftw.org/fftw3.pdf  
-cd fftw-${FFTWVER}
+cd /usr/local/fftw-${FFTWVER}
 sudo ./configure --disable-fortran --enable-openmp --enable-threads --enable-single --with-gnu-ld  
 ```
 	" only if building for TFLite or such acceleration in inferencing with FFTs --enable-single "  
@@ -121,45 +141,100 @@ sudo make install
 
 
 ## OpenCV  
+Updated to python3.8, opencv-4.2.0 ... I think...  
+*OK this seems to work*  
+  
+Nevermind... also noticed we need to find lapacka nd openblas   
+Trying this first and then rebuilding   
+Still Trying   
+First install Eigen (this is a headers only library, but hten point openCV to it)  
+```bash  
+cd ${HOME}/Downloads
+wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.gz
+cd /usr/local/include
+sudo tar -xzf ${HOME}/Downloads/eigen-3.3.7.tar.gz
+sudo ln -sf /usr/local/include/eigen-3.3.7/Eigen /usr/local/include/Eigen
+```  
 
-```bash
-DIR=`pwd`
+```bash  
 sudo apt -y install build-essential
 sudo apt -y install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 sudo apt -y install python2-dev python3-numpy python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
+sudo apt install -y libblas-dev libblas64-dev libopenblas-base libopenblas-dev libopenblas-openmp-dev libopenblas-pthread-dev libopenblas-serial-dev mlpack-bin mlpack-doc python3-cvxopt python3-mlpack liblapack64-3 liblapack64-dev
+sudo apt install -y libjs-jquery-ui-docs tcl8.6 tk8.6
+```  
+
+#HERE HERE HERE HERE#
+*try removing gstreamer1.0-opencv and purge the system of opencv that might be conflicting with this opencv4*
+sudo apt install -y gstreamer1.0-qt5 gstreamer1.0-plugins-base gstreamer1.0-opencv
+
+```bash  
+sudo apt install -y python-attr-doc python-cvxopt-doc python-cycler-doc python3-genshi python3-lxml-dbg python-lxml-doc dvipng ffmpeg inkscape ipython3 python-matplotlib-doc python3-cairocffi python3-nose
+sudo apt install -y python3-pyqt5 python3-sip python3-tornado texlive-extra-utils texlive-latex-extra ttf-staypuft python-pandas-doc python3-statsmodels subversion python-pyparsing-doc python-scipy-doc python3-netcdf4 python-tables-doc vitables tix python3-tk-dbg
+sudo apt install -y libcusolver10 libcusolvermg10 libmkl-full-dev libmkl-scalapack-ilp64 libmkl-scalapack-lp64
+sudo apt -y install qtbase5-dev qtdeclarative5-dev
+sudo apt -y install opencl-headers ocl-icd-libopencl1
 cd ${HOME}/Downloads
-OPENCVVER=4.1.1
-wget https://github.com/opencv/opencv/archive/${OPENCVVER}.zip
+cvVersion=4.2.0
+wget https://github.com/opencv/opencv/archive/${cvVersion}.tar.gz -O opencv.tar.gz
+wget https://github.com/opencv/opencv/opencv_contrib/archive/${cvVersion}.tar.gz -O opencv_contrib.tar.gz
 cd /usr/local
-sudo unzip ${HOME}/Downloads/${OPENCVVER}.zip -d ./
-cd opencv-${OPENCVVER}
-sudo mkdir build
-cd build
-sudo cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local \
+sudo tar -xzf ${HOME}/Downloads/opencv.tar.gz
+sudo tar -xzf ${HOME}/Downloads/opencv_contrib.tar.gz
+sudo mkdir -p /usr/local/opencv-${cvVersion}/build
+cd /usr/local/opencv-${cvVersion}/build
+```  
+*Old method... keeps failing on roaster*   
+... trying now to turn off Eigen and the examples  
+... this seems to have done it.  
+```bash
+sudo cmake -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_INSTALL_PREFIX=/usr/local \
+-DOPENCV_EXTRA_MODULES_PATH=/usr/local/opencv_contrib-${cvVersion}/modules \
+-DINSTALL_C_EXAMPLES=OFF \
+-DBUILD_EXAMPLES=OFF \
+-DWITH_EIGEN=OFF \
+-DWITH_LAPACK=ON \ 
+-DWITH_OPENGL=ON \
+-DWITH_QT=ON \
 -DPYTHON3_EXECUTABLE=/usr/bin/python3 \
--DPYTHON_INCLUDE_DIR=/usr/include/python3.7 \
--DPYTHON_INCLUDE_DIR2=/usr/include/x86_64-linux-gnu/python3.7m \
--DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.7m.so \
--DPYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3.7/dist-packages/numpy/core/include/ ..
-sudo make
+-DPYTHON_INCLUDE_DIR=/usr/include/python3.8 \
+-DPYTHON_INCLUDE_DIR2=/usr/include/x86_64-linux-gnu/python3.8m \
+-DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.8m.so \
+-DPYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3.8/dist-packages/numpy/core/include/ \
+..
+sudo make -j4 
 sudo make install 
+sudo make uninstall
+sudo rm /usr/local/{bin,lib}/*opencv*
+sudo rm /usr/local/opencv-${cvVersion}/build/{bin,lib}/*opencv*
+sudo make install
 cd $DIR
-sudo ln -sf /usr/local/opencv-4.1.1/build/lib /usr/local/lib/opencv
-```
-## OpenCV4 retry
+```   
+Let's see how this works.
+
+sudo ln -df /usr/local/lib/libopencv_core.so.4.2.0 ../../build/lib/libopencv_core.so.4.2
+```sudo ln -sf /usr/local/opencv-${cvVersion}/build/lib /usr/local/lib/opencv4```
+
+
+
+OpenCV4 failed retry   
+*likely not necessary below here*  
 When building with GStreamer add 
 `pkg-config --cflags --libs gstreamer-1.0` to the gcc command
 ```bash
 DIR=`pwd`
-sudo apt -y install libopencv-dev build-essential cmake libdc1394-22 libdc1394-22-dev libjpeg-dev libpng-dev libtiff5-dev libavcodec-dev libavformat-dev libswscale-dev libxine2-dev libgstreamer-opencv1.0-0 libgstreamer1.0-0 libtbb-dev libqt4-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 
+sudo apt -y install libopencv-dev build-essential cmake libdc1394-22 libdc1394-22-dev libjpeg-dev libpng-dev libtiff5-dev libavcodec-dev libavformat-dev libswscale-dev libxine2-dev libgstreamer-opencv1.0-0 libgstreamer1.0-0 libtbb-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 
+sudo apt -y install qtbase5-dev
 sudo apt -y install libgtk-3-dev libblas-dev liblapack-dev liblapack-doc checkinstall libeigen-stl-containers-dev libeigen3-dev default-jre default-jdk
 sudo apt -y install libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
-sudo apt -y install libcanberra-gtk-modu libcanberra-gtk3-module
+sudo apt -y install libcanberra-gtk-module libcanberra-gtk3-module
+========================================================== HERE HERE HERE ============================ building OpenCV4 but aim for 4.2.0 version Home machines
 cd /usr/local
 sudo git clone https://github.com/opencv/opencv.git
 sudo git clone https://github.com/opencv/opencv_contrib.git
 sudo mkdir ./opencv/build
-cd !$
+cd ./opencv/build 
 sudo cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local/opencv/build -DINSTALL_C_EXAMPLES=ON -DBUILD_EXAMPLES=ON -DOPENCV_EXTRA_MODULES_PATH=/usr/local/opencv_contrib/modules ../
 sudo make -j4
 sudo make install
@@ -187,6 +262,17 @@ adding the line **CVFLAGS= -ggdb `pkg-config --cflags --libs opencv`** to the ma
 ## Fall back OpenCV 3.2
 sudo apt -y install cl-opencv-apps gstreamer1.0-opencv libcv-bridge-dev libgstreamer-opencv1.0-0 libopencv-apps-dev libopencv-calib3d-dev libopencv-contrib-dev libopencv-core-dev libopencv-dev libopencv-features2d-dev libopencv-flann-dev libopencv-highgui-dev libopencv-imgcodecs-dev libopencv-imgproc-dev libopencv-ml-dev libopencv-objdetect-dev libopencv-photo-dev libopencv-shape-dev libopencv-stitching-dev libopencv-superres-dev libopencv-ts-dev libopencv-video-dev libopencv-videoio-dev libopencv-videostab-dev libopencv-viz-dev libopencv3.2-java libopencv3.2-jni node-opencv opencv-data opencv-doc python-cv-bridge python-image-geometry python-opencv python-opencv-apps python-remotecv python3-image-geometry python3-opencv python3-opencv-apps
 #OpenCV seems not to install on the coffee-T3500 machine
+
+## Opencv-4.2.0
+
+## Opencv-4.3.0
+# not really doing this one now...  
+```bash
+curdir=`pwd`
+cd ${HOME}/Downloads
+git clone https://github.com/opencv/opencv.git
+```
+
 
 ## Docker  
 read this: https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce  
@@ -271,7 +357,26 @@ pip install pyopencl  ## also seems to fail the same way ##
 ## HDF5  
 http://docs.h5py.org/en/stable/build.html
 https://www.hdfgroup.org/downloads/hdf5/source-code/
-git clone https://github.com/live-clones/hdf5.git
+```bash
+cd ${HOME}/Downloads
+wget http://prdownloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz
+cd /usr/local
+tar -xzf ${HOME}/Downloads/zlib-1.2.11.tar.gz
+sudo make ./zlib-1.2.11/build
+cd ./zlib-1.2.11/build
+sudo ../configure
+sudo make
+sudo make install
+cd /usr/local
+sudo git clone https://github.com/live-clones/hdf5.git
+cd hdf5
+sudo mkdir build
+cd build
+sudo ../configure --prefix=/usr/local --with-gnu-ld --enable-cxx
+sudo make
+sudo make install
+pip3 install h5py
+```
 
 ## Used for Bazel   
 # maybe going to stick with make until absolutely necessary
