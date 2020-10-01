@@ -138,6 +138,44 @@ sudo make install
 ```
 # only succeed by ignoring MPI on both beanbox and roaster, 
 
+## HDF5  
+https://www.hdfgroup.org/downloads/hdf5/
+http://docs.h5py.org/en/stable/build.html
+https://www.hdfgroup.org/downloads/hdf5/source-code/
+https://www.hdfgroup.org/downloads/hdf5
+```bash
+cd ${HOME}/Downloads
+wget https://www.hdfgroup.org/downloads/hdf5/source-code/#
+wget http://prdownloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz
+cd /usr/local
+tar -xzf ${HOME}/Downloads/zlib-1.2.11.tar.gz
+sudo make ./zlib-1.2.11/build
+cd ./zlib-1.2.11/build
+sudo ../configure
+sudo make
+sudo make install
+cd /usr/local
+sudo git clone https://github.com/live-clones/hdf5.git
+cd hdf5
+sudo mkdir build
+cd build
+sudo ../configure --prefix=/usr/local --with-gnu-ld --enable-cxx
+sudo make
+sudo make install
+```
+
+## qucs-s circuit simulator (quite universal circuit simulator - spice)  
+```bash
+cd ${HOME}/Downloads
+wget -c http://download.opensuse.org/repositories/home:/ra3xdh/Debian_9.0/Release.key
+sudo vim /etc/apt/sources.list
+```
+add `deb http://download.opensuse.org/repositories/home:/ra3xdh/Debian_9.0/ ./` to the file /etc/apt/sources.list
+```bash
+sudo apt-key add Release.key
+sudo apt-get update
+sudo apt-get install qucs-s
+```
 
 
 ## OpenCV  
@@ -353,30 +391,6 @@ pip3 install pyopencl  ## this seems to have failed ##
   error: command 'x86_64-linux-gnu-gcc' failed with exit status 1
 pip install pyopencl  ## also seems to fail the same way ##
 
-
-## HDF5  
-http://docs.h5py.org/en/stable/build.html
-https://www.hdfgroup.org/downloads/hdf5/source-code/
-```bash
-cd ${HOME}/Downloads
-wget http://prdownloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz
-cd /usr/local
-tar -xzf ${HOME}/Downloads/zlib-1.2.11.tar.gz
-sudo make ./zlib-1.2.11/build
-cd ./zlib-1.2.11/build
-sudo ../configure
-sudo make
-sudo make install
-cd /usr/local
-sudo git clone https://github.com/live-clones/hdf5.git
-cd hdf5
-sudo mkdir build
-cd build
-sudo ../configure --prefix=/usr/local --with-gnu-ld --enable-cxx
-sudo make
-sudo make install
-pip3 install h5py
-```
 
 ## Used for Bazel   
 # maybe going to stick with make until absolutely necessary
