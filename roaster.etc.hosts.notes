@@ -1,8 +1,8 @@
 127.0.0.1       localhost
 #127.0.0.1      roaster
-192.168.0.102   roaster
+192.168.0.100   roaster
+192.168.0.101   beanbox
 192.168.0.103   pavoni
-192.168.0.106   beanbox
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     ip6-localhost ip6-loopback

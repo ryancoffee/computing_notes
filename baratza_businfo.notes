@@ -1,0 +1,50 @@
+Bus info          Device     Class          Description
+=======================================================
+                             system         NUC8i5BEK (BOXNUC8i5BEK)
+                             bus            NUC8BEB
+                             memory         64KiB BIOS
+                             memory         32GiB System Memory
+                             memory         16GiB SODIMM DDR4 Synchronous 2400 MHz (0.4 ns)
+                             memory         16GiB SODIMM DDR4 Synchronous 2400 MHz (0.4 ns)
+                             memory         256KiB L1 cache
+                             memory         1MiB L2 cache
+                             memory         6MiB L3 cache
+cpu@0                        processor      Intel(R) Core(TM) i5-8259U CPU @ 2.30GHz
+pci@0000:00:00.0             bridge         8th Gen Core Processor Host Bridge/DRAM Registers
+pci@0000:00:02.0             display        Iris Plus Graphics 655
+pci@0000:00:08.0  /dev/fb0   generic        Xeon E3-1200 v5/v6 / E3-1500 v5 / 6th/7th/8th Gen Core Processor Gaussian Mixture Model
+pci@0000:00:12.0             generic        Cannon Point-LP Thermal Controller
+pci@0000:00:14.0             bus            Cannon Point-LP USB 3.1 xHCI Controller
+usb@1             usb1       bus            xHCI Host Controller
+usb@1:3                      bus            USB2.0 Hub
+usb@1:3.2                    input          Das Keyboard 4
+usb@1:3.4                    input          HUGE TrackBall
+usb@1:a                      communication  Bluetooth wireless interface
+usb@2             usb2       bus            xHCI Host Controller
+usb@2:4           scsi0      storage        Elements 25A3
+scsi@0:0.0.0      /dev/sda   disk           8001GB Elements 25A3
+scsi@0:0.0.0,1    /dev/sda1  volume         7452GiB EXT4 volume
+pci@0000:00:14.2             memory         RAM memory
+pci@0000:00:14.3  wlp0s20f3  network        Cannon Point-LP CNVi [Wireless-AC]
+pci@0000:00:16.0             communication  Cannon Point-LP MEI Controller #1
+pci@0000:00:17.0             storage        Cannon Point-LP SATA Controller [AHCI Mode]
+pci@0000:00:1c.0             bridge         Cannon Point-LP PCI Express Root Port #1
+pci@0000:00:1c.4             bridge         Cannon Point-LP PCI Express Root Port #5
+pci@0000:00:1d.0             bridge         Cannon Point-LP PCI Express Root Port #9
+pci@0000:6d:00.0             storage        NVMe SSD Controller SM981/PM981/PM983
+pci@0000:00:1d.6             bridge         Cannon Point-LP PCI Express Root Port #15
+pci@0000:6e:00.0             generic        RTS522A PCI Express Card Reader
+pci@0000:00:1f.0             bridge         Cannon Point-LP LPC Controller
+pci@0000:00:1f.3             multimedia     Cannon Point-LP High Definition Audio Controller
+pci@0000:00:1f.4             bus            Cannon Point-LP SMBus Controller
+pci@0000:00:1f.5             bus            Cannon Point-LP SPI Controller
+pci@0000:00:1f.6  eno1       network        Ethernet Connection (6) I219-V
+                             system         PnP device PNP0c02
+                             system         PnP device PNP0c02
+                             system         PnP device PNP0c02
+                             generic        PnP device INT3f0d
+                             system         PnP device PNP0c02
+                             system         PnP device PNP0c02
+                             system         PnP device PNP0c02
+                             system         PnP device PNP0c02
+                             power          To Be Filled By O.E.M.
