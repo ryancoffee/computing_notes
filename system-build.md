@@ -73,7 +73,7 @@ sudo chmod g+rwx /nvme
 
 ## For tethering a digital camera  
 ```bash
-sudo apt install entangle
+sudo apt -y install gphoto2 gtkam entangle
 ```
 
 ## building with NVMe available to the installer  
