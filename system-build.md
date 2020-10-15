@@ -71,6 +71,11 @@ sudo chgrp data /nvme
 sudo chmod g+rwx /nvme
 ```
 
+## For tethering a digital camera  
+```bash
+sudo apt install entangle
+```
+
 ## building with NVMe available to the installer  
 https://www.dell.com/support/article/en-us/sln299303/loading-ubuntu-on-systems-using-pcie-m2-drives?lang=en
 
