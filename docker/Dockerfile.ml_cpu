@@ -1,0 +1,215 @@
+FROM pshub01:5000/devtools:8.0.0
+LABEL maintainer "Omar E. Quijano <omarq@slac.stanford.edu>"
+ENV no_proxy localhost
+
+#Packages
+RUN rpm -v --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro && \
+    rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm && \
+    yum -y update && yum -y install \
+    kernel-devel \
+    cmake3 \
+    gtk3-devel \
+    gtk+ \
+    gtk+-devel \
+    tbb \
+    tbb-devel \
+    atlas \
+    atlas-devel \
+    ffmpeg \
+    ffmpeg-devel \
+    openblas \
+    openblas-devel \
+    lapack-devel \
+    blas-devel \
+    qt5-qtbase-devel \
+    jasper-devel \
+    openexr-devel \
+    libwebp-devel \
+    libjpeg-turbo-devel \
+    freeglut-devel \
+    mesa-libGL-devel \
+    libtiff-devel \
+    libdc1394-devel \
+    eigen3-devel \
+    libv4l-devel \
+    gstreamer-plugins-base-devel \
+    gstreamer1-plugins-base-devel \
+    opencl-headers \
+    ocl-icd \
+    ocl-icd-devel \
+    httpd24-libcurl \
+    httpd24-libcurl-devel \
+    hdf5 \
+    hdf5-devel \
+    R \
+    R-devel \
+    R-core \
+    R-core-devel && \
+    rm -rf /var/cache/yum/*
+
+#Header Path
+RUN ln -s /usr/include/sys/io.h /usr/include/io.h \
+    && ln -s /usr/include/libv4l1-videodev.h /usr/include/sys/videoio.h
+
+#VTK
+WORKDIR /root
+ADD vtk/VTK-8.2.0.tar.gz /root
+RUN mkdir -p /root/VTK-8.2.0/build \
+    && cd /root/VTK-8.2.0/build \
+    && cmake3 -D CMAKE_BUILD_TYPE=RELEASE \
+        -D CMAKE_INSTALL_PREFIX=/opt/vtk \
+        -D VTK_BUILD_EXAMPLES=ON \
+        -D VTK_PYTHON_VERSION=3 \
+        -D VTK_USE_MPI=ON \
+        -D VTK_WRAP_PYTHON=ON \
+        .. \
+    && make -j 40 install \
+    && rm -rf /root/VTK-8.2.0 \
+    && echo "/opt/rh/httpd24/root/usr/lib64" > /etc/ld.so.conf.d/httpd24.conf \
+    && echo "/opt/vtk/lib64" > /etc/ld.so.conf.d/vtk.conf \
+    && ldconfig  
+ENV PYTHONPATH $PYTHONPATH:/opt/vtk/lib64/python3.7/site-packages
+            
+# OpenCV
+WORKDIR /root
+ENV OPENCV_VERSION="4.1.1"
+RUN wget https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip -O opencv-${OPENCV_VERSION}.zip && \
+    wget "https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.zip" -O opencv_contrib-${OPENCV_VERSION}.zip \
+&& unzip opencv-${OPENCV_VERSION}.zip \
+&& unzip opencv_contrib-${OPENCV_VERSION}.zip \
+&& mkdir ./opencv-${OPENCV_VERSION}/build \
+&& mkdir /opt/opencv \
+&& cd ./opencv-${OPENCV_VERSION}/build \
+&& cmake3 -D CMAKE_BUILD_TYPE=RELEASE \
+    -D CMAKE_INSTALL_PREFIX=/opt/opencv \
+    -D BUILD_EXAMPLES=ON \
+    -D BUILD_JAVA=OFF \
+    -D BUILD_JPEG=ON \
+    -D BUILD_PNG=ON \
+    -D BUILD_TBB=ON \
+    -D BUILD_TESTS=ON \
+    -D BUILD_TIFF=ON \
+    -D BUILD_ZLIB=ON \
+    -D BUILD_DOCS=OFF \
+    -D BUILD_opencv_python3=ON \
+    -D INSTALL_C_EXAMPLES=ON \
+    -D INSTALL_PYTHON_EXAMPLES=ON \
+    -D INSTALL_TESTS=ON \
+    -D MKL_WITH_TBB=ON \
+    -D OPENCV_GENERATE_PKGCONFIG=ON \
+    -D BUILD_NEW_PYTHON_SUPPORT=ON \
+    -D PYTHON_DEFAULT_EXECUTABLE=$(which python3.7) \
+    -D PYTHON_EXECUTABLE=$(which python3.7) \
+    -D PYTHON_INCLUDE_DIR=$(python3.7 -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())") \
+    -D PYTHON_LIBRARY=/usr/local/lib/libpython3.7m.so \
+    -D PYTHON_PACKAGES_PATH=$(python3.7 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())") \
+    -D PYTHON_NUMPY_INCLUDE_DIRS=/usr/local/lib/python3.7/site-packages/numpy/core/include \
+    -D WITH_OPENGL=ON \
+    -D WITH_QT=ON \
+    -D WITH_TBB=ON \
+    -D WITH_GTK_2_X=ON \
+    -D WITH_INF_ENGINE=ON \
+    -D WITH_FFMPEG=ON \
+    -D WITH_MKL=ON \
+    -D MKL_USE_MULTITHREAD=ON \
+    -D BOOST_NO_SYSTEM_PATHS=TRUE \
+    -D BOOST_ROOT=/opt/boost/ \
+    -D VTK_DIR=/opt/vtk/lib64/cmake/vtk-8.90 \
+    -D OpenGL_GL_PREFERENCE=GLVND \
+    -D BUILD_OPENCV_LEGACY=OFF \
+    -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-4.1.1/modules \
+    .. \
+     && make -j 40 install \
+     && rm -rf /root/opencv-${OPENCV_VERSION}.zip \
+     && rm -rf /root/opencv-${OPENCV_VERSION} \
+     && rm -rf /root/opencv_contrib-${OPENCV_VERSION}.zip \
+     && rm -rf /root/opencv_contrib-${OPENCV_VERSION} \
+     && rm -rf /var/yum/cache/* && \
+     ln -s \
+       /opt/opencv/lib/python3.7/site-packages/cv2/python-3.7/cv2.cpython-37m-x86_64-linux-gnu.so \
+       /usr/local/lib/python3.7/site-packages/cv2.so
+
+# Build jaxlib, jax, jax-md
+WORKDIR /usr/local/lib/python3.7
+RUN  git clone https://github.com/google/jax \
+     && cd jax \
+     && python3.7 build/build.py \
+     && pip3.7 --no-cache-dir install -e build \
+     && pip3.7 --no-cache-dir install -e . \
+     && cd ../ \
+     && git clone https://github.com/google/jax-md \
+     && pip3.7 --no-cache-dir  install -e jax-md 
+
+#Python Packages
+RUN pip3.7 --no-cache-dir install --upgrade \
+        mock \  
+        future \
+        keras_applications \
+        keras_preprocessing
+ 
+#Tensorflow
+COPY tensorflow/bazel-0.26.1-installer-linux-x86_64.sh /root
+ADD tensorflow/tensorflow-2.0.0_cpu.tar /root/
+RUN sh /root/bazel-0.26.1-installer-linux-x86_64.sh
+WORKDIR /root/tensorflow-2.0.0
+RUN  bazel build --config=mkl \ 
+         //tensorflow/tools/pip_package:build_pip_package && \ 
+     bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/pip && \
+     pip3.7 --no-cache-dir install --upgrade /tmp/pip/tensorflow-*.whl && \
+     rm -rf /tmp/pip && \
+     rm -rf /root/.cache && \ 
+     rm -rf /root/bazel-0.26.1-installer-linux-x86_64.sh \
+     rm -rf /root/tensorflow-2.0.0
+ 
+#Keras
+RUN pip3.7 --no-cache-dir install \
+        keras \
+        statsmodels \
+        enum34 \
+        bcolz \
+        mkl \
+        horovod \
+        ipykernel \
+        ipympl  
+#       jupyterlab \
+#       jupyter-tensorboard \
+#       jupyterlab-git \
+#       jupyterlab_github \
+#       jupyterlab-latex \
+#       jupyterhub-ldapauthenticator
+
+#R Packages
+WORKDIR /
+RUN R -e "install.packages(c('crayon', 'pbdZMQ', 'devtools','repr','IRdisplay','IRkernel'), type='source',  repos='http://cloud.r-project.org')" \
+    && R -e "IRkernel::installspec(user = FALSE)" \
+    && R -e "install.packages(c('plyr','tidyverse','markdown','forecast','reshape','rcurl','randomforest','sandwich', \
+        'shiny','data.table','dplyr','qunatmod', 'tm','stargazer','ggplot2','gdata','ggeffects','multiwayvcov', \
+        'QuantPsyc','VIF','lmtest','AER','psych','gridExtra','usdm','grid','corrplot'), repos='http://cloud.r-project.org')"
+
+#JupyterLab Extensions
+#RUN jupyter labextension install @jupyterlab/hub-extension \
+##    && jupyter labextension install jupyterlab-server-proxy \
+#     && jupyter labextension install @jupyterlab/git \
+#     && jupyter labextension install @jupyterlab/github \
+#     && jupyter labextension install jupyterlab_tensorboard \
+#     && jupyter labextension install @jupyterlab/latex \
+#     && jupyter labextension install jupyterlab-drawio \
+#     && jupyter labextension install jupyterlab-spreadsheet \
+##    && jupyter labextension install jupyterlab_filetree \
+#     && jupyter labextension install @jupyterlab/plotly-extension \
+#     && jupyter labextension install @jupyter-widgets/jupyterlab-manager \
+#     && jupyter labextension install jupyter-matplotlib \
+#     && jupyter labextension install jupyterlab_bokeh \
+#     && jupyter serverextension enable --py jupyterlab_git
+ 
+#SLAC Configuration for JupyterHub
+#COPY slac/jupyter_notebook_config.py /etc/jupyter/
+#COPY slac/20_jupytervars /etc/sudoers.d/
+#COPY slac/lablauncher.sh \
+#     slac/runlab.sh \
+#      /opt/slac/jupyterlab/
+#COPY slac/scl.sh /etc/profile.d/
+#RUN cd /etc/profile.d && ln scl.sh $(basename scl.sh .sh).csh \
+#    && jupyter tensorboard enable --system
+#
+#ENTRYPOINT ["/opt/slac/jupyterlab/lablauncher.sh"]

@@ -1,0 +1,119 @@
+FROM centos
+LABEL maintainer "Omar E. Quijano <omarq@slac.stanford.edu>"
+ENV http_proxy http://172.21.32.65:3128
+ENV https_proxy http://172.21.32.65:3128
+ENV no_proxy 127.0.0.1
+ENV ftp_proxy $http_proxy
+
+#INSTALL PACKAGES
+RUN yum -y update && yum install -y \
+        epel-release \
+        @development \
+        zlib-devel \
+        openssl-devel \
+        openssl \
+        sudo \
+        texlive \
+        atlas \
+        fftw \
+        fftw-devel \
+        fftw-static \
+        gnuplot \
+        gsl-devel \
+        hdf5 \
+        hdf5-devel \
+        lapack \
+        numpy \
+        scipy \
+        swig \
+        unit \
+        lzip  \
+        mlocate \
+        dkms \
+        libvdpau \
+        libffi-devel \
+        freetype-devel \
+        libpng-devel \
+        zlib-devel \
+        openmpi \
+        openmpi-devel \
+        openmpi3 \
+        openmpi3-devel \
+        zeromq-devel \
+        sqlite-devel \
+	vim-enhanced \
+	bc \
+	git \
+        wget \
+        tk \
+        tk-devel \
+        tcl \
+        tcl-devel \
+        ruby \
+        ruby-devel \
+        mesa-dri-drivers \
+        mesa-libGlu \
+        xorg-x11-xauth \
+        xorg-x11-server-utils \
+        java-11-openjdk-devel \
+        libcurl \ 
+        libcurl-devel \
+        czmq-devel \
+        cmake \
+        gtk2-devel \
+        openldap-clients \
+	centos-release-scl && \
+    yum install -y \ 
+        devtoolset-7 \
+        rh-nodejs8 \
+        rh-git218 \
+        rh-git218-git-lfs.x86_64 && \
+    rm -rf /var/cache/yum/*
+
+#ENABLE DEVELOPMENT SOFTWARE COLLECTION
+ENV PATH=/opt/rh/devtoolset-7/root/usr/bin:/opt/rh/rh-git218/root/usr/bin:/opt/rh/rh-nodejs8/root/usr/bin:/usr/lib64/openmpi3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+RUN echo "source scl_source enable devtoolset-7" >> /root/.bashrc && \
+    echo "source scl_source enable rh-nodejs8" >> /root/.bashrc && \
+    echo "source scl_source enable rh-git218" >> /root/.bashrc && \
+    echo "/usr/lib64/openmpi3/lib" > /etc/ld.so.conf.d/openmpi.conf && \
+    ln -sf /usr/lib64/openmpi3 /usr/local/openmpi3 && \
+    ln -sf /usr/include/openmpi3-x86_64 /usr/local/openmpi3/include && \
+    source /root/.bashrc && \
+    ldconfig
+
+#PYTHON 3.7.4
+RUN curl -L https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tgz | tar -xz -C /root/ \
+	&& cd /root/Python-3.7.4 && ./configure --enable-optimizations --enable-shared --with-threads \
+        && make altinstall \
+        && echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.conf \
+	&& rm -rf /root/Python* && \
+        ldconfig
+
+#PYTHON MODULES
+RUN pip3.7 --no-cache-dir install --upgrade pip && \
+    pip3.7 --no-cache-dir install \
+        wheel \
+        Pillow \
+        h5py \
+        mpi4py \
+        matplotlib \
+        numpy \
+        scipy \
+        sklearn \
+        pandas \
+        seaborn \
+        protobuf \
+        intelhex \
+        cython \
+        ipython && \
+    cd /usr/local/bin && ln -sf python3.7 python3
+
+#BOOST:
+RUN curl -L https://dl.bintray.com/boostorg/release/1.71.0/source/boost_1_71_0.tar.gz | tar -xz -C /root/ \
+        && cd /root/boost_1_71_0 \
+        && ./bootstrap.sh --prefix=/opt/boost --with-python=/usr/local/bin/python3.7 \
+        && sed -i 's/^[^#]*3.7/#&/' project-config.jam \
+        && sed -i '/3.7/ a \     using python : 3.7 : /usr/local/bin/python3.7 : /usr/local/include/python3.7m : /usr/lib ;' project-config.jam \
+        && echo "using mpi : /usr/lib64/openmpi3/bin/mpicc ;" >> project-config.jam \
+        && ./b2 -j 20 install --prefix=/opt/boost \
+        && rm -rf /root/boost*
