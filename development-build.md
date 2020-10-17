@@ -13,6 +13,7 @@ sudo parted /dev/nvme0n1 mklabel msdos
 sudo parted --align optimal /dev/nvme0n1 mkpart primary xfs 0% 100%
 lsblk # pake sure the partition /dev/nvme0n1p1 exists
 sudo mkfs.xfs -L nvme -f /dev/nvme0n1p1
+sudo blkid # to get the UUID for hte drive, use this in /etc/fstab rather than label=nvme
 sudo vim /etc/fstab
 sudo mkdir /nvme #if not existing already
 sudo mount -av
@@ -23,6 +24,7 @@ sudo chmod g+rwx /nvme
 now attempting a reboot to see if this is now available in gnome-disks app for formatting the nvme.  
 This didn't work... for nvme memory to be performance, we need to use parted to create the filesystem.  
 when editing /etc/fstab make sure the UUID bit is changed to LABEL=nvme
+CORRECTION... going back to UUID since that travels with the hardware
 
 
 ## h5py  
@@ -141,7 +143,7 @@ sudo apt -y install build-essential
 sudo apt -y install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 sudo apt -y install python2-dev python3-numpy python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
 cd ${HOME}/Downloads
-OPENCVVER=4.1.1
+OPENCVVER=4.3.0
 wget https://github.com/opencv/opencv/archive/${OPENCVVER}.zip
 cd /usr/local
 sudo unzip ${HOME}/Downloads/${OPENCVVER}.zip -d ./
