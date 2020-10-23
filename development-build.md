@@ -19,6 +19,7 @@ sudo parted /dev/nvme0n1 mklabel msdos
 sudo parted --align optimal /dev/nvme0n1 mkpart primary xfs 0% 100%
 lsblk # pake sure the partition /dev/nvme0n1p1 exists
 sudo mkfs.xfs -L nvme -f /dev/nvme0n1p1
+sudo blkid # to get the UUID for hte drive, use this in /etc/fstab rather than label=nvme
 sudo vim /etc/fstab
 sudo mkdir /nvme #if not existing already
 sudo mount -av
@@ -29,6 +30,7 @@ sudo chmod g+rwx /nvme
 now attempting a reboot to see if this is now available in gnome-disks app for formatting the nvme.  
 This didn't work... for nvme memory to be performance, we need to use parted to create the filesystem.  
 when editing /etc/fstab make sure the UUID bit is changed to LABEL=nvme
+CORRECTION... going back to UUID since that travels with the hardware
 
 
 ## h5py  
@@ -138,6 +140,44 @@ sudo make install
 ```
 # only succeed by ignoring MPI on both beanbox and roaster, 
 
+## HDF5  
+https://www.hdfgroup.org/downloads/hdf5/
+http://docs.h5py.org/en/stable/build.html
+https://www.hdfgroup.org/downloads/hdf5/source-code/
+https://www.hdfgroup.org/downloads/hdf5
+```bash
+cd ${HOME}/Downloads
+wget https://www.hdfgroup.org/downloads/hdf5/source-code/#
+wget http://prdownloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz
+cd /usr/local
+tar -xzf ${HOME}/Downloads/zlib-1.2.11.tar.gz
+sudo make ./zlib-1.2.11/build
+cd ./zlib-1.2.11/build
+sudo ../configure
+sudo make
+sudo make install
+cd /usr/local
+sudo git clone https://github.com/live-clones/hdf5.git
+cd hdf5
+sudo mkdir build
+cd build
+sudo ../configure --prefix=/usr/local --with-gnu-ld --enable-cxx
+sudo make
+sudo make install
+```
+
+## qucs-s circuit simulator (quite universal circuit simulator - spice)  
+```bash
+cd ${HOME}/Downloads
+wget -c http://download.opensuse.org/repositories/home:/ra3xdh/Debian_9.0/Release.key
+sudo vim /etc/apt/sources.list
+```
+add `deb http://download.opensuse.org/repositories/home:/ra3xdh/Debian_9.0/ ./` to the file /etc/apt/sources.list
+```bash
+sudo apt-key add Release.key
+sudo apt-get update
+sudo apt-get install qucs-s
+```
 
 
 ## OpenCV  

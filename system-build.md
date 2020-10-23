@@ -20,7 +20,7 @@ sudo systemctl restart ssh
 sudo apt -y install python3-venv python3-dev python3-pip python3-setuptools  
 sudo apt -y install python-pip python-setuptools    
 pip install --upgrade pip
-pip3 install numpy scipy sklearn tensorflow
+pip3 install numpy scipy sklearn tensorflow pydot graphviz
 # maybe wait to do tensorflow2.0 as a source build  
 pip install numpy scipy	tensorflow    
 
@@ -69,6 +69,11 @@ sudo chmod g+w /data
 sudo chown coffee /nvme
 sudo chgrp data /nvme
 sudo chmod g+rwx /nvme
+```
+
+## For tethering a digital camera  
+```bash
+sudo apt -y install gphoto2 gtkam entangle
 ```
 
 ## building with NVMe available to the installer  
