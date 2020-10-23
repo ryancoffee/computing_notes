@@ -378,6 +378,20 @@ sudo make install
 pip3 install h5py
 ```
 
+## PyPENELOPE  
+```bash
+pip3 install matplotlib pyparsing wxpython
+cd ${HOME}/Downloads
+wget http://sourceforge.net/projects/pypenelope/files/0.2.10/pypenelope-0.2.10-binaries.tar.gz
+wget http://sourceforge.net/projects/pypenelope/files/0.2.10/pypenelope-0.2.10.tar.gz
+cd /usr/local
+mkdir pypenelope
+cd !$
+mv ${HOME}/Downloads/pypenelope*.tar.gz ./
+
+```
+wxpyton fails  
+
 ## Used for Bazel   
 # maybe going to stick with make until absolutely necessary
 sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python  
