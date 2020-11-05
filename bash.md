@@ -12,3 +12,10 @@ else
 fi
 unset color_prompt force_color_prompt
 ```
+
+## cool 
+read command to get a string from the command line
+```bash
+read response 
+echo $response
+```
