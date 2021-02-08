@@ -23,9 +23,8 @@ sudo blkid # to get the UUID for hte drive, use this in /etc/fstab rather than l
 sudo vim /etc/fstab
 sudo mkdir /nvme #if not existing already
 sudo mount -av
-sudo chown coffee /nvme
-sudo chgrp data /nvme
-sudo chmod g+rwx /nvme
+sudo chown -R coffee:data /nvme
+sudo chmod 755 /nvme
 ```
 now attempting a reboot to see if this is now available in gnome-disks app for formatting the nvme.  
 This didn't work... for nvme memory to be performance, we need to use parted to create the filesystem.  
