@@ -16,6 +16,14 @@ sudo apt -y install net-tools openssh-server
 sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.factory-defaults  
 sudo systemctl restart ssh  
 
+[coffee@penguin camera-MPDcam]$ ssh-keygen -t rsa -b 4096 -C "coffeer76@gmail.com"
+[coffee@penguin camera-MPDcam]$ eval "$(ssh-agent -s)"
+Agent pid 32499
+[coffee@penguin camera-MPDcam]$ ssh-add ~/.ssh/id_rsa
+Identity added: /home/coffee/.ssh/id_rsa (/home/coffee/.ssh/id_rsa)
+[coffee@penguin camera-MPDcam]$ 
+
+
 ## Python and pip  
 sudo apt -y install python3-venv python3-dev python3-pip python3-setuptools  
 sudo apt -y install python-pip python-setuptools    
