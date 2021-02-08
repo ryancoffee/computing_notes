@@ -28,7 +28,7 @@ Identity added: /home/coffee/.ssh/id_rsa (/home/coffee/.ssh/id_rsa)
 sudo apt -y install python3-venv python3-dev python3-pip python3-setuptools  
 sudo apt -y install python-pip python-setuptools    
 pip install --upgrade pip
-pip3 install numpy scipy sklearn tensorflow pydot graphviz
+pip3 install numpy scipy sklearn tensorflow pydot graphviz h5py matplotlib
 # maybe wait to do tensorflow2.0 as a source build  
 pip install numpy scipy	tensorflow    
 
