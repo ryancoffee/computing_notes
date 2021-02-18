@@ -177,7 +177,10 @@ sudo make
 sudo make install
 ```
 
-## qucs-s circuit simulator (quite universal circuit simulator - spice)  
+## qucs-spice circuit simulator (quite universal circuit simulator - spice)  
+snap install qucs-spice
+
+## non snap way to install
 ```bash
 cd ${HOME}/Downloads
 wget -c http://download.opensuse.org/repositories/home:/ra3xdh/Debian_9.0/Release.key
