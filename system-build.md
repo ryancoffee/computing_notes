@@ -16,16 +16,24 @@ sudo apt -y install net-tools openssh-server
 sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.factory-defaults  
 sudo systemctl restart ssh  
 
+[coffee@penguin camera-MPDcam]$ ssh-keygen -t rsa -b 4096 -C "coffeer76@gmail.com"
+[coffee@penguin camera-MPDcam]$ eval "$(ssh-agent -s)"
+Agent pid 32499
+[coffee@penguin camera-MPDcam]$ ssh-add ~/.ssh/id_rsa
+Identity added: /home/coffee/.ssh/id_rsa (/home/coffee/.ssh/id_rsa)
+[coffee@penguin camera-MPDcam]$ 
+
+
 ## Python and pip  
 sudo apt -y install python3-venv python3-dev python3-pip python3-setuptools  
 sudo apt -y install python-pip python-setuptools    
 pip install --upgrade pip
-pip3 install numpy scipy sklearn tensorflow pydot graphviz
+pip3 install numpy scipy sklearn tensorflow pydot graphviz h5py matplotlib
 # maybe wait to do tensorflow2.0 as a source build  
 pip install numpy scipy	tensorflow    
 
 ## Nice extras for GUI   
-sudo apt -y install gimp grpn g3data dia geeqie pandoc
+sudo apt -y install gimp grpn g3data dia geeqie pandoc pdftk
 
 ## Chrome
 sudo apt -y install libxss1 libappindicator1 libindicator7  
@@ -69,6 +77,11 @@ sudo chmod g+w /data
 sudo chown coffee /nvme
 sudo chgrp data /nvme
 sudo chmod g+rwx /nvme
+```
+
+## For tethering a digital camera  
+```bash
+sudo apt -y install gphoto2 gtkam entangle
 ```
 
 ## building with NVMe available to the installer  

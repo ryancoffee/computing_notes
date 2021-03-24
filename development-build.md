@@ -19,16 +19,17 @@ sudo parted /dev/nvme0n1 mklabel msdos
 sudo parted --align optimal /dev/nvme0n1 mkpart primary xfs 0% 100%
 lsblk # pake sure the partition /dev/nvme0n1p1 exists
 sudo mkfs.xfs -L nvme -f /dev/nvme0n1p1
+sudo blkid # to get the UUID for hte drive, use this in /etc/fstab rather than label=nvme
 sudo vim /etc/fstab
 sudo mkdir /nvme #if not existing already
 sudo mount -av
-sudo chown coffee /nvme
-sudo chgrp data /nvme
-sudo chmod g+rwx /nvme
+sudo chown -R coffee:data /nvme
+sudo chmod 755 /nvme
 ```
 now attempting a reboot to see if this is now available in gnome-disks app for formatting the nvme.  
 This didn't work... for nvme memory to be performance, we need to use parted to create the filesystem.  
 when editing /etc/fstab make sure the UUID bit is changed to LABEL=nvme
+CORRECTION... going back to UUID since that travels with the hardware
 
 
 ## h5py  
@@ -138,16 +139,69 @@ sudo make install
 ```
 # only succeed by ignoring MPI on both beanbox and roaster, 
 
+## HDF5  
+https://www.hdfgroup.org/downloads/hdf5/
+http://docs.h5py.org/en/stable/build.html
+https://www.hdfgroup.org/downloads/hdf5/source-code/
+https://www.hdfgroup.org/downloads/hdf5
+
+obtain the tarball from the website...
+unzip it to /usr/local
+
+```bash
+cd /usr/local/
+sudo git clone https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git
+cd hdf5
+./configure --prefix=/usr/local/hdf5 --enable-cxx
+```
+
+## HDF5 old
+```bash
+cd ${HOME}/Downloads
+wget https://www.hdfgroup.org/downloads/hdf5/source-code/#
+wget http://prdownloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz
+cd /usr/local
+tar -xzf ${HOME}/Downloads/zlib-1.2.11.tar.gz
+sudo make ./zlib-1.2.11/build
+cd ./zlib-1.2.11/build
+sudo ../configure
+sudo make
+sudo make install
+cd /usr/local
+sudo git clone https://github.com/live-clones/hdf5.git
+cd hdf5
+sudo mkdir build
+cd build
+sudo ../configure --prefix=/usr/local --with-gnu-ld --enable-cxx
+sudo make
+sudo make install
+```
+
+## qucs-spice circuit simulator (quite universal circuit simulator - spice)  
+snap install qucs-spice
+
+## non snap way to install
+```bash
+cd ${HOME}/Downloads
+wget -c http://download.opensuse.org/repositories/home:/ra3xdh/Debian_9.0/Release.key
+sudo vim /etc/apt/sources.list
+```
+add `deb http://download.opensuse.org/repositories/home:/ra3xdh/Debian_9.0/ ./` to the file /etc/apt/sources.list
+```bash
+sudo apt-key add Release.key
+sudo apt-get update
+sudo apt-get install qucs-s
+```
 
 
 ## OpenCV  
 Updated to python3.8, opencv-4.2.0 ... I think...  
 *OK this seems to work*  
   
-Nevermind... also noticed we need to find lapacka nd openblas   
+Nevermind... also noticed we need to find lapack and openblas   
 Trying this first and then rebuilding   
 Still Trying   
-First install Eigen (this is a headers only library, but hten point openCV to it)  
+First install Eigen (this is a headers only library, but then point openCV to it)  
 ```bash  
 cd ${HOME}/Downloads
 wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.gz
@@ -175,9 +229,10 @@ sudo apt install -y libcusolver10 libcusolvermg10 libmkl-full-dev libmkl-scalapa
 sudo apt -y install qtbase5-dev qtdeclarative5-dev
 sudo apt -y install opencl-headers ocl-icd-libopencl1
 cd ${HOME}/Downloads
-cvVersion=4.2.0
+cvVersion=4.3.0
 wget https://github.com/opencv/opencv/archive/${cvVersion}.tar.gz -O opencv.tar.gz
 wget https://github.com/opencv/opencv/opencv_contrib/archive/${cvVersion}.tar.gz -O opencv_contrib.tar.gz
+https://github.com/opencv/opencv_contrib.git
 cd /usr/local
 sudo tar -xzf ${HOME}/Downloads/opencv.tar.gz
 sudo tar -xzf ${HOME}/Downloads/opencv_contrib.tar.gz
@@ -190,7 +245,7 @@ cd /usr/local/opencv-${cvVersion}/build
 ```bash
 sudo cmake -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_INSTALL_PREFIX=/usr/local \
--DOPENCV_EXTRA_MODULES_PATH=/usr/local/opencv_contrib-${cvVersion}/modules \
+-DOPENCV_EXTRA_MODULES_PATH=/usr/local/opencv_contrib/modules \
 -DINSTALL_C_EXAMPLES=OFF \
 -DBUILD_EXAMPLES=OFF \
 -DWITH_EIGEN=OFF \
@@ -199,22 +254,37 @@ sudo cmake -DCMAKE_BUILD_TYPE=Release \
 -DWITH_QT=ON \
 -DPYTHON3_EXECUTABLE=/usr/bin/python3 \
 -DPYTHON_INCLUDE_DIR=/usr/include/python3.8 \
--DPYTHON_INCLUDE_DIR2=/usr/include/x86_64-linux-gnu/python3.8m \
+-DPYTHON_INCLUDE_DIR2=/usr/include/x86_64-linux-gnu/python3.8 \
 -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.8m.so \
 -DPYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3.8/dist-packages/numpy/core/include/ \
+-DBUILD_opencv_rgbd=OFF \
 ..
+sudo ln -sf /usr/local/include/eigen-3.3.7/ /usr/local/include/eigen
+sudo ln -sf /usr/local/include/eigen-3.3.7/unsupported /usr/local/include/unsupported
 sudo make -j4 
 sudo make install 
-sudo make uninstall
-sudo rm /usr/local/{bin,lib}/*opencv*
-sudo rm /usr/local/opencv-${cvVersion}/build/{bin,lib}/*opencv*
-sudo make install
 cd $DIR
 ```   
-Let's see how this works.
 
 sudo ln -df /usr/local/lib/libopencv_core.so.4.2.0 ../../build/lib/libopencv_core.so.4.2
 ```sudo ln -sf /usr/local/opencv-${cvVersion}/build/lib /usr/local/lib/opencv4```
+
+It seems that we **may** need the file   
+/usr/local/lib/pkgconfig/opencv4.pc  
+with contents:
+```bash
+prefix=/usr/local
+exec_prefix=${prefix}/opencv4
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: OpenCV
+Description: OpenCV for computer vision
+Version: 4.1.1
+Libs: -L${libdir} -lopencv4
+Libs.private: -lm
+Cflags: -I${includedir}
+```
 
 
 
@@ -263,16 +333,6 @@ adding the line **CVFLAGS= -ggdb `pkg-config --cflags --libs opencv`** to the ma
 ## Fall back OpenCV 3.2
 sudo apt -y install cl-opencv-apps gstreamer1.0-opencv libcv-bridge-dev libgstreamer-opencv1.0-0 libopencv-apps-dev libopencv-calib3d-dev libopencv-contrib-dev libopencv-core-dev libopencv-dev libopencv-features2d-dev libopencv-flann-dev libopencv-highgui-dev libopencv-imgcodecs-dev libopencv-imgproc-dev libopencv-ml-dev libopencv-objdetect-dev libopencv-photo-dev libopencv-shape-dev libopencv-stitching-dev libopencv-superres-dev libopencv-ts-dev libopencv-video-dev libopencv-videoio-dev libopencv-videostab-dev libopencv-viz-dev libopencv3.2-java libopencv3.2-jni node-opencv opencv-data opencv-doc python-cv-bridge python-image-geometry python-opencv python-opencv-apps python-remotecv python3-image-geometry python3-opencv python3-opencv-apps
 #OpenCV seems not to install on the coffee-T3500 machine
-
-## Opencv-4.2.0
-
-## Opencv-4.3.0
-# not really doing this one now...  
-```bash
-curdir=`pwd`
-cd ${HOME}/Downloads
-git clone https://github.com/opencv/opencv.git
-```
 
 
 ## Docker  
@@ -378,6 +438,20 @@ sudo make
 sudo make install
 pip3 install h5py
 ```
+
+## PyPENELOPE  
+```bash
+pip3 install matplotlib pyparsing wxpython
+cd ${HOME}/Downloads
+wget http://sourceforge.net/projects/pypenelope/files/0.2.10/pypenelope-0.2.10-binaries.tar.gz
+wget http://sourceforge.net/projects/pypenelope/files/0.2.10/pypenelope-0.2.10.tar.gz
+cd /usr/local
+mkdir pypenelope
+cd !$
+mv ${HOME}/Downloads/pypenelope*.tar.gz ./
+
+```
+wxpyton fails  
 
 ## Used for Bazel   
 # maybe going to stick with make until absolutely necessary
