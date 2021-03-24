@@ -1,3 +1,16 @@
+## headless operation and eth only (disable wifi
+```bash
+sudo systemctl set-default multi-user.target
+sudo systemctl stop bluetooth.service
+sudo systemctl disable bluetooth.service
+systemctl status bluetooth.service
+```
+to add back the GUI interface, 
+```bash
+sudo systemctl set-default graphical.target
+```
+
+
 ## valgrind  
 ```bash
 sudo apt -y update  
