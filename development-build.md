@@ -238,6 +238,7 @@ cd ./opencv/build
 sudo cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local/opencv/build -DINSTALL_C_EXAMPLES=ON -DBUILD_EXAMPLES=ON -DOPENCV_EXTRA_MODULES_PATH=/usr/local/opencv_contrib/modules ../
 sudo make -j4
 sudo make install
+sudo ldconfig
 ```
 It seems that we **may** need the file   
 /usr/local/lib/pkgconfig/opencv4.pc  
