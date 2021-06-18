@@ -71,3 +71,7 @@ while keeping the data also safe in /home and /data on the TB drive in pavoni
 	https://en.wikipedia.org/wiki/Andrew_File_System
 	https://en.wikipedia.org/wiki/Network-attached_storage
 	https://en.wikipedia.org/wiki/Network_File_System
+
+
+
+

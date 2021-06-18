@@ -27,6 +27,7 @@ https://www.blasbenito.com/post/01_home_cluster/
 # Executing bash commands remotely
 ```bash
 ssh -t username@host 'top'
+ssh -t roaster 'sudo apt update; sudo apt -y upgrade'
 ```
 
 ```

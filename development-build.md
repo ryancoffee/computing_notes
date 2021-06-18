@@ -7,6 +7,10 @@ then test sensors in a terminal with
 ```bash
 watch -n 2 sensors
 
+##exfat for microsd cards
+```bash
+sudo apt-get install exfat-fuse exfat-utils
+```
 
 ## xfs  
 This gives the kind of performance filesystem for PCIe installed nvme drives as in beanbox and roaster  
