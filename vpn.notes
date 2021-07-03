@@ -1,0 +1,18 @@
+
+coffee@coffee-ThinkPad-X395:~/computing_notes (master)$ cat - >> ~/.bashrc
+alias vpn='/opt/cisco/anyconnect/bin/vpn'
+alias vpnui='/opt/cisco/anyconnect/bin/vpnui'
+
+from command line then you call /opt/cisco/anyconnect/bin/vpn or by alias just vpn
+
+https://princeton.service-now.com/service?id=kb_article&sys_id=125a7bb11b6b4850435885d56b4bcb05
+
+sudo apt install libqt5webkit5
+sudo apt install GlobalProtect_UI_deb-5.1.4.0-9.deb
+
+
+globalconnect
+>> launch-ui
+
+ssh rc8936@traverse.princeton.edu
+

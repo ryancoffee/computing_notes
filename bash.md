@@ -19,3 +19,20 @@ read command to get a string from the command line
 read response 
 echo $response
 ```
+# Setting up home cluster
+```
+https://www.blasbenito.com/post/01_home_cluster/
+```
+
+# Executing bash commands remotely
+```bash
+ssh -t username@host 'top'
+ssh -t roaster 'sudo apt update; sudo apt -y upgrade'
+```
+
+```
+https://www.cnet.com/news/ssh-tip-send-commands-remotely/
+https://www.linuxtechi.com/execute-linux-commands-remote-system-over-ssh/
+https://www.cyberciti.biz/faq/unix-linux-execute-command-using-ssh/
+https://www.techrepublic.com/article/how-to-run-a-command-that-requires-sudo-via-ssh/
+```

@@ -1,3 +1,16 @@
+## headless operation and eth only (disable wifi
+```bash
+sudo systemctl set-default multi-user.target
+sudo systemctl stop bluetooth.service
+sudo systemctl disable bluetooth.service
+systemctl status bluetooth.service
+```
+to add back the GUI interface, 
+```bash
+sudo systemctl set-default graphical.target
+```
+
+
 ## valgrind  
 ```bash
 sudo apt -y update  
@@ -7,6 +20,10 @@ then test sensors in a terminal with
 ```bash
 watch -n 2 sensors
 
+##exfat for microsd cards
+```bash
+sudo apt-get install exfat-fuse exfat-utils
+```
 
 
 
@@ -211,7 +228,10 @@ sudo make
 sudo make install
 ```
 
-## qucs-s circuit simulator (quite universal circuit simulator - spice)  
+## qucs-spice circuit simulator (quite universal circuit simulator - spice)  
+snap install qucs-spice
+
+## non snap way to install
 ```bash
 cd ${HOME}/Downloads
 wget -c http://download.opensuse.org/repositories/home:/ra3xdh/Debian_9.0/Release.key
@@ -339,6 +359,7 @@ cd ./opencv/build
 sudo cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local/opencv/build -DINSTALL_C_EXAMPLES=ON -DBUILD_EXAMPLES=ON -DOPENCV_EXTRA_MODULES_PATH=/usr/local/opencv_contrib/modules ../
 sudo make -j4
 sudo make install
+sudo ldconfig
 ```
 It seems that we **may** need the file   
 /usr/local/lib/pkgconfig/opencv4.pc  
