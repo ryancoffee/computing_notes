@@ -8,6 +8,8 @@ then test sensors in a terminal with
 watch -n 2 sensors
 
 
+
+
 ## xfs  
 This gives the kind of performance filesystem for PCIe installed nvme drives as in beanbox and roaster  
 ```bash
@@ -31,6 +33,38 @@ This didn't work... for nvme memory to be performance, we need to use parted to 
 when editing /etc/fstab make sure the UUID bit is changed to LABEL=nvme
 CORRECTION... going back to UUID since that travels with the hardware
 
+## tensorflow 2.0 
+```
+https://www.tensorflow.org/install  
+https://medium.com/@cran2367/install-and-setup-tensorflow-2-0-2c4914b9a265
+https://www.tensorflow.org/install/pip
+```
+# virtualenv  
+
+```bash
+sudo apt -y update
+sudo pip3 install -U virtualenv
+mkdir ${HOME}/virtualenvs
+cd ${HOME}/virtualenvs
+virtualenv --system-site-packages -p python3 tf_2  # --python=python3.7 if you want control of python3 version
+source ${HOME}/virtualenvs/tf_2/bin/activate
+pip3 install --upgrade pip
+pip install --upgrade tensorflow
+python3 -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+```
+  
+Add to ${HOME}/.bashrc   
+```bash
+# add virtualenvs to PATH
+if [ -d "${HOME}/virtualenvs" ] ; then
+    PATH="${HOME}/virtualenvs:$PATH"
+fi      
+```
+
+# direct install   
+```bash
+pip3 install --upgrade h5py pillow tensorflow 
+```
 
 ## h5py  
 ```bash

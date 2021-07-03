@@ -5,6 +5,12 @@ sudo apt -y install git vim bc gnuplot
 git config --global user.email "coffeer76@gmail.com"  
 git config --global user.name "Ryan Coffee"  
 
+## Setting up for audio recording  
+```bash
+sudo apt-add-repository ppa:audio-recorder/ppa
+sudo apt -y update
+sudo apt -y install audio-recorder
+```
 
 ## This is for building and getting ssh running  
 
